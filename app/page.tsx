@@ -1,40 +1,23 @@
-"use client";
+import { Hero } from "@/components/site/hero";
+import { About } from "@/components/site/about";
+import { Services } from "@/components/site/services";
+import { ProjectsPreview } from "@/components/site/projects-preview";
+import { ContactCta } from "@/components/site/contact-cta";
+import { Navbar } from "@/components/shared/navbar";
+import { Footer } from "@/components/shared/footer";
 
-import { ThemeProvider } from "next-themes";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Skills from "@/components/Skills";
-import Services from "@/components/Services";
-import Process from "@/components/Process";
-import TrustSection from "@/components/TrustSection";
-import Packages from "@/components/Packages";
-import Projects from "@/components/Projects";
-import Gallery from "@/components/Gallery";
-import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="relative">
-        <Navbar />
-        <main>
-          <Hero />
-          <About />
-          <Skills />
-          <Services />
-          <Process />
-          <TrustSection />
-          <Packages />
-          <Projects />
-          <Gallery />
-          <FAQ />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
+      <main className="space-y-20 pb-20">
+        <Hero />
+        <About />
+        <Services />
+        <ProjectsPreview />
+        <ContactCta />
+      </main>
+      <Footer />
+    </div>
   );
 }

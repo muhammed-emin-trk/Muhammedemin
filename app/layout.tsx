@@ -1,46 +1,23 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
-  title: "Muhammed Emin Türkoğlu | Hemşire & Yazılım Geliştirici",
-  description:
-    "Muhammed Emin Türkoğlu'nun hem sağlık hem teknoloji alanındaki profesyonel yolculuğunu tanıtan modern kişisel portfolyo sitesi.",
-  keywords: [
-    "Muhammed Emin Türkoğlu",
-    "Hemşire",
-    "Web Geliştirici",
-    "Next.js Portfolio",
-    "Dijital Pazarlama",
-  ],
-  openGraph: {
-    title: "Muhammed Emin Türkoğlu | Portfolyo",
-    description:
-      "Hemşirelik deneyimi ile yazılım ve dijital pazarlama tutkusunu birleştiren profesyonel portfolyo.",
-    type: "website",
-    locale: "tr_TR",
-    url: "https://example.com",
-    siteName: "Muhammed Emin Türkoğlu Portfolyo",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Muhammed Emin Türkoğlu | Portfolyo",
-    description:
-      "Hemşirelik, yazılım ve dijital pazarlamayı bir araya getiren kişisel tanıtım sitesi.",
-  },
+  title: "Muhammed Emin Türkoğlu | Kişisel Marka",
+  description: "Hemşirelik, yazılım ve dijital strateji odağında premium kişisel marka deneyimi.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={GeistSans.className}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

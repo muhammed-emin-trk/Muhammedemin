@@ -1,0 +1,1 @@
+import Link from 'next/link'; export default function BlogPage(){const posts=['hemsirelikte-dijital-donusum','nextjs-ile-kisisel-marka'];return <main className='mx-auto max-w-5xl p-6 text-slate-100'><h1 className='text-4xl font-bold'>Blog</h1>{posts.map((p)=><Link className='mt-4 block border-b border-white/10 py-4' key={p} href={`/blog/${p}`}>{p}</Link>)}</main>}
