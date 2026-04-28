@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 const projects = [
   {
-    title: "Healthcare Storytelling Profile",
-    description: "Hem sağlık profesyonelliğini hem de kişisel marka değerini tek bir premium web deneyiminde birleştiren kişisel site.",
+    title: "Premium Kişisel Marka Sitesi",
+    description: "Güven odaklı iletişim, güçlü CTA alanları ve premium görsel dil ile tasarlanan çok bölümlü personal branding web sitesi.",
     tags: ["Next.js", "Tailwind", "Branding"],
   },
   {
-    title: "Volunteer Experience Showcase",
-    description: "European Voluntary Service deneyimlerini etkili bir timeline ve güven veren bir anlatım yapısında sunan bölüm tasarımı.",
-    tags: ["UX Writing", "Motion", "UI"],
+    title: "Kurumsal Tanıtım & Teklif Platformu",
+    description: "Hizmet anlatımı, referans alanları, süreç adımları ve teklif toplama altyapısıyla kurumsal müşteri kazanımına odaklanan yapı.",
+    tags: ["UX Writing", "Lead Form", "SEO"],
   },
   {
-    title: "Photo-First Portfolio Layout",
-    description: "Fotoğrafları öne çıkaran, mobilde hızlı ve masaüstünde premium hissi veren canlı galeri sistemi.",
-    tags: ["Portfolio", "Visual Design", "Performance"],
+    title: "Performans Odaklı Landing Page",
+    description: "Reklam trafiğini satışa dönüştürmek için optimize edilen hızlı açılan, mobil odaklı ve A/B testine uygun landing page mimarisi.",
+    tags: ["Performance", "Conversion", "Analytics"],
   },
 ];
 
