@@ -4,20 +4,19 @@ import { motion } from "framer-motion";
 
 const skillGroups = [
   {
-    title: "Sağlık",
-    items: ["Hasta bakımı", "Klinik uygulamalar", "Ekip çalışması", "Kriz yönetimi"],
+    title: "Profesyonel Güçlü Yönler",
+    items: ["Hasta bakımı ve klinik yaklaşım", "İleri iletişim ve empati", "Kriz yönetimi", "Takım koordinasyonu"],
     gradient: "from-brand-blue/20 to-brand-green/20",
   },
   {
-    title: "Teknoloji & Pazarlama",
-    items: [
-      "Web geliştirme (Next.js, React, Tailwind)",
-      "SEO optimizasyonu",
-      "Dijital pazarlama",
-      "İçerik üretimi",
-      "Sosyal medya yönetimi",
-    ],
+    title: "Dijital ve Yaratıcı Yetkinlikler",
+    items: ["Fotoğraf kompozisyonu", "Sosyal medya içerik üretimi", "Web geliştirme (Next.js, React)", "SEO ve dijital görünürlük"],
     gradient: "from-brand-purple/20 to-brand-indigo/20",
+  },
+  {
+    title: "Yabancı Dil",
+    items: ["İngilizce: B1 (Konuşma A2)", "Almanca: A1", "Türkçe: Ana dil"],
+    gradient: "from-emerald-200/30 to-sky-300/30",
   },
 ];
 
@@ -26,7 +25,7 @@ export default function Skills() {
     <section id="yetenekler" className="py-20">
       <div className="section-container">
         <h3 className="text-2xl font-bold sm:text-3xl">Yetenekler & Uzmanlık Alanları</h3>
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
           {skillGroups.map((group, index) => (
             <motion.article
               key={group.title}

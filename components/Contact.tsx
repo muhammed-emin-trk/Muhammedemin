@@ -1,14 +1,14 @@
 "use client";
 
-import { Mail, Phone, Linkedin, Github, Instagram } from "lucide-react";
+import { Mail, Phone, Linkedin, Instagram, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const contacts = [
-  { label: "E-posta", value: "muhammedemin@example.com", href: "mailto:muhammedemin@example.com", icon: Mail },
-  { label: "Telefon", value: "+90 555 123 45 67", href: "tel:+905551234567", icon: Phone },
+  { label: "E-posta", value: "muhammedeminturk.16@gmail.com", href: "mailto:muhammedeminturk.16@gmail.com", icon: Mail },
+  { label: "Telefon", value: "0546 285 18 26", href: "tel:+905462851826", icon: Phone },
+  { label: "Lokasyon", value: "Bursa, Türkiye", href: "#", icon: MapPin },
+  { label: "Instagram", value: "@muhammedemin", href: "https://instagram.com", icon: Instagram },
   { label: "LinkedIn", value: "linkedin.com/in/muhammedemin", href: "https://linkedin.com", icon: Linkedin },
-  { label: "GitHub", value: "github.com/muhammedemin", href: "https://github.com", icon: Github },
-  { label: "Instagram", value: "instagram.com/muhammedemin", href: "https://instagram.com", icon: Instagram },
 ];
 
 export default function Contact() {
@@ -44,6 +44,9 @@ export default function Contact() {
             transition={{ duration: 0.5 }}
             className="glass-card space-y-4"
           >
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              İş birliği, fotoğraf çekimi veya profesyonel projeler için mesaj bırakabilirsiniz.
+            </p>
             <input
               type="text"
               placeholder="İsim"
