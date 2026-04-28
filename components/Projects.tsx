@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 const projects = [
   {
-    title: "Sağlık Takip Paneli",
-    description: "Hasta takibi ve günlük bakım süreçlerini kolaylaştıran modern bir yönetim paneli tasarımı.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
+    title: "Healthcare Storytelling Profile",
+    description: "Hem sağlık profesyonelliğini hem de kişisel marka değerini tek bir premium web deneyiminde birleştiren kişisel site.",
+    tags: ["Next.js", "Tailwind", "Branding"],
   },
   {
-    title: "Klinik Sosyal Medya Stratejisi",
-    description: "Bir sağlık markası için etkileşim odaklı içerik planı ve SEO destekli dijital kampanya çalışması.",
-    tags: ["SEO", "İçerik", "Analitik"],
+    title: "Volunteer Experience Showcase",
+    description: "European Voluntary Service deneyimlerini etkili bir timeline ve güven veren bir anlatım yapısında sunan bölüm tasarımı.",
+    tags: ["UX Writing", "Motion", "UI"],
   },
   {
-    title: "Kişisel Marka Web Sitesi",
-    description: "Hizmet odaklı profesyoneller için hızlı, sade ve dönüşüm odaklı kişisel web sitesi prototipi.",
-    tags: ["React", "UX/UI", "Framer Motion"],
+    title: "Photo-First Portfolio Layout",
+    description: "Fotoğrafları öne çıkaran, mobilde hızlı ve masaüstünde premium hissi veren canlı galeri sistemi.",
+    tags: ["Portfolio", "Visual Design", "Performance"],
   },
 ];
 
@@ -24,7 +24,7 @@ export default function Projects() {
   return (
     <section id="projeler" className="py-20">
       <div className="section-container">
-        <h3 className="text-2xl font-bold sm:text-3xl">Projeler / Portfolyo</h3>
+        <h3 className="text-2xl font-bold sm:text-3xl">Projeler / Portfolyo Yaklaşımı</h3>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {projects.map((project, index) => (
             <motion.article
@@ -39,10 +39,7 @@ export default function Projects() {
               <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">{project.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-slate-300/70 px-3 py-1 text-xs text-slate-700 dark:border-slate-700 dark:text-slate-300"
-                  >
+                  <span key={tag} className="rounded-full border border-slate-300/70 px-3 py-1 text-xs text-slate-700 dark:border-slate-700 dark:text-slate-300">
                     {tag}
                   </span>
                 ))}
