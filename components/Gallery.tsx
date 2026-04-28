@@ -1,17 +1,46 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { ADMIN_STORAGE_KEY, defaultGalleryItems, type GalleryItem } from "@/lib/siteContent";
 
-const showcaseCards = [
-  { title: "Kurumsal Landing", subtitle: "Yüksek güven hissi ve güçlü teklif butonlarıyla dönüşüm odaklı ana sayfa" },
-  { title: "Hizmet Kataloğu", subtitle: "Ziyaretçinin hızlı karar vermesi için sade, anlaşılır ve premium hizmet modülleri" },
-  { title: "Referans Blokları", subtitle: "Sosyal kanıt ve müşteri yorumlarıyla marka güvenini güçlendiren yapı" },
-  { title: "Süreç Yönetimi Paneli", subtitle: "Müşteri tarafında şeffaf ilerleme takibi sağlayan proje aşama ekranları" },
-  { title: "Mobil Öncelikli Tasarım", subtitle: "Telefon ekranlarında hızlı açılan, akıcı ve satış odaklı kullanıcı deneyimi" },
-  { title: "Teklif Toplama Formu", subtitle: "Doğru sorularla kaliteli lead toplayan yapılandırılmış iletişim akışı" },
-];
+const parseGallery = (rawValue: string | null): GalleryItem[] => {
+  if (!rawValue) {
+    return defaultGalleryItems;
+  }
+
+  try {
+    const parsed = JSON.parse(rawValue) as GalleryItem[];
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return defaultGalleryItems;
+    }
+
+    return parsed.map((item, index) => ({
+      id: item.id || `item-${index}`,
+      title: item.title || "Başlık",
+      subtitle: item.subtitle || "Açıklama",
+      imageUrl: item.imageUrl || defaultGalleryItems[index % defaultGalleryItems.length].imageUrl,
+    }));
+  } catch {
+    return defaultGalleryItems;
+  }
+};
 
 export default function Gallery() {
+  const [cards, setCards] = useState<GalleryItem[]>(defaultGalleryItems);
+
+  useEffect(() => {
+    setCards(parseGallery(window.localStorage.getItem(ADMIN_STORAGE_KEY)));
+
+    const onStorage = () => {
+      setCards(parseGallery(window.localStorage.getItem(ADMIN_STORAGE_KEY)));
+    };
+
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   return (
     <section id="galeri" className="py-20">
       <div className="section-container">
@@ -19,23 +48,31 @@ export default function Gallery() {
           <div>
             <h3 className="text-2xl font-bold sm:text-3xl">Vitrin / Örnek Çalışma Alanları</h3>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 sm:text-base">
-              Premium yazılım ve web projelerinde öne çıkan temel modül ve teslim başlıkları.
+              Fotoğraflar artık admin panelden güncellenebilir. Görsel yüklenmezse kart yine metinle görünür.
             </p>
           </div>
         </div>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {showcaseCards.map((card, index) => (
+          {cards.map((card, index) => (
             <motion.article
-              key={card.title}
+              key={card.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: index * 0.06 }}
-              className="group relative min-h-72 overflow-hidden rounded-3xl border border-white/30 bg-gradient-to-br from-slate-300/80 via-slate-200/75 to-slate-400/80 p-6 shadow-glass dark:from-slate-800 dark:via-slate-900 dark:to-slate-700"
+              className="group relative min-h-72 overflow-hidden rounded-3xl border border-white/30 shadow-glass"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.7),transparent_60%)] opacity-80 transition duration-300 group-hover:opacity-100" />
-              <div className="relative mt-auto flex h-full flex-col justify-end rounded-2xl bg-black/30 p-4 text-white backdrop-blur-[2px]">
+              <Image
+                src={card.imageUrl}
+                alt={card.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition duration-500 group-hover:scale-105"
+                unoptimized
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+              <div className="relative mt-auto flex h-full flex-col justify-end p-5 text-white">
                 <p className="text-xs uppercase tracking-[0.2em] text-white/80">Showcase</p>
                 <h4 className="mt-2 text-xl font-semibold">{card.title}</h4>
                 <p className="mt-2 text-sm text-white/90">{card.subtitle}</p>

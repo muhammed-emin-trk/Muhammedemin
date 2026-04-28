@@ -12,6 +12,7 @@ const navItems = [
   { href: "#projeler", label: "Projeler" },
   { href: "#sss", label: "SSS" },
   { href: "#iletisim", label: "İletişim" },
+  { href: "/admin", label: "Admin" },
 ];
 
 export default function Navbar() {
