@@ -1,22 +1,28 @@
-# Muhammed Emin Türkoğlu - Premium Kişisel Marka Sitesi
-
-Next.js 14 + TypeScript ile geliştirilmiş; site ve admin paneli içeren, Türkçe içerikli kişisel marka platformu.
+# Muhammed Emin Türkoğlu — Premium Kişisel Marka Platformu
 
 ## Kurulum
+1. `npm install`
+2. `.env.example` dosyasını `.env` olarak kopyalayın.
+3. `npm run db:push`
+4. `npm run db:seed`
+5. `npm run dev`
 
-```bash
-npm install
-cp .env.example .env
-npm run db:push
-npm run dev
-```
+## Admin Giriş
+- URL: `/admin/login`
+- E-posta/şifre: `.env` içindeki `ADMIN_EMAIL` ve `ADMIN_PASSWORD`
 
-## Varsayılan admin girişi
-- E-posta: `admin@meturkoglu.com`
-- Şifre: `.env` içindeki `ADMIN_PASSWORD`
+## Komutlar
+- `npm run dev`: Geliştirme
+- `npm run build`: Prod build
+- `npm run lint`: ESLint
+- `npm run db:push`: Prisma şema push
+- `npm run db:seed`: Örnek veriler
 
-## Özellikler
-- Anasayfa, Hakkımda, Projeler, Blog, İletişim sayfaları
-- `/admin` panel iskeleti (projeler, blog, mesajlar, ayarlar)
-- Prisma şeması + SQLite başlangıç
-- NextAuth credentials tabanlı giriş altyapısı
+## Klasör Yapısı
+- `app/`: route ve layout yapısı
+- `components/site`: public site bileşenleri
+- `components/shared`: ortak UI ve davranış katmanları
+- `prisma/`: schema ve seed
+
+## Notlar
+Bu repo koyu tema varsayılan, premium tasarım sistemi ve genişletilebilir admin modülleri hedefiyle düzenlenmiştir.
