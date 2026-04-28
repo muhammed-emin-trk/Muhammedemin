@@ -4,22 +4,22 @@ import { motion } from "framer-motion";
 
 const timeline = [
   {
-    date: "2018 - Günümüz",
-    title: "Fotoğrafçılık & Gönüllülük",
+    date: "2026",
+    title: "Premium Marka Web Siteleri",
     description:
-      "Etkinlik, konferans ve sosyal sorumluluk projelerinde fotoğraf odaklı içerik üretiyor; çocuklar ve gençlerle gönüllülük çalışmalarında aktif rol alıyorum.",
+      "Kişisel marka, ajans ve KOBİ odaklı yüksek güven hissi veren web projeleri geliştiriyorum. Performans, dönüşüm ve tasarım dengesini birlikte kuruyorum.",
   },
   {
-    date: "2017 - Günümüz",
-    title: "Hemşirelik Kariyeri",
+    date: "2024 - 2025",
+    title: "Ölçeklenebilir Yazılım Altyapısı",
     description:
-      "Uludağ Üniversitesi Hemşirelik eğitimi sonrası hasta bakımı, iletişim ve kriz yönetimi alanlarında sahada güçlü bir tecrübe kazandım.",
+      "Next.js, React ve modern frontend mimarileri ile yönetilebilir, hızlı, SEO dostu ve bakım maliyeti düşük projeler teslim ettim.",
   },
   {
-    date: "2018",
-    title: "European Voluntary Service",
+    date: "Sürekli",
+    title: "Müşteri Güveni & İletişim",
     description:
-      "Macaristan merkezli projelerde çocuk odaklı faaliyetler, festival ve sosyal etkileşim organizasyonlarında gönüllü olarak yer aldım.",
+      "Şeffaf süreç takibi, düzenli raporlama ve hızlı destek ile projelerde karşı tarafta güven ve memnuniyet oluşturan çalışma modeli uyguluyorum.",
   },
 ];
 
@@ -36,9 +36,9 @@ export default function About() {
         >
           <h3 className="text-2xl font-bold sm:text-3xl">Hakkımda</h3>
           <p className="mt-5 leading-relaxed text-slate-600 dark:text-slate-300">
-            İnsan odaklı bakış açısını teknoloji, estetik ve iletişimle birleştiren çok yönlü bir profesyonelim. Hem
-            sağlık alanındaki disiplinim hem de fotoğraf ve içerik tarafındaki yaratıcı yaklaşımım sayesinde kişisel
-            markamı güçlü bir şekilde geliştiriyorum.
+            Yazılım ve program geliştirme alanında, yalnızca “güzel görünen” değil aynı zamanda iş üreten ve güven veren
+            dijital ürünler tasarlıyorum. Projelerde önceliğim; net hedef, doğru teknik mimari, kaliteli teslimat ve güçlü
+            iletişim.
           </p>
 
           <div className="mt-8 grid gap-4">

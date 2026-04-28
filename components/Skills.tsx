@@ -4,18 +4,18 @@ import { motion } from "framer-motion";
 
 const skillGroups = [
   {
-    title: "Profesyonel Güçlü Yönler",
-    items: ["Hasta bakımı ve klinik yaklaşım", "İleri iletişim ve empati", "Kriz yönetimi", "Takım koordinasyonu"],
+    title: "Yazılım Geliştirme",
+    items: ["Next.js & React", "TypeScript", "REST API entegrasyonları", "Component bazlı mimari"],
     gradient: "from-brand-blue/20 to-brand-green/20",
   },
   {
-    title: "Dijital ve Yaratıcı Yetkinlikler",
-    items: ["Fotoğraf kompozisyonu", "Sosyal medya içerik üretimi", "Web geliştirme (Next.js, React)", "SEO ve dijital görünürlük"],
+    title: "Performans & Güven",
+    items: ["Core Web Vitals optimizasyonu", "Teknik SEO altyapısı", "Responsive ve erişilebilir UI", "Form ve veri güvenliği"],
     gradient: "from-brand-purple/20 to-brand-indigo/20",
   },
   {
-    title: "Yabancı Dil",
-    items: ["İngilizce: B1 (Konuşma A2)", "Almanca: A1", "Türkçe: Ana dil"],
+    title: "İş Odaklı Yetkinlik",
+    items: ["Dönüşüm odaklı landing page", "Kurumsal güven dili", "Hızlı teslim & revize", "Sürdürülebilir bakım"],
     gradient: "from-emerald-200/30 to-sky-300/30",
   },
 ];

@@ -6,9 +6,11 @@ import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { href: "#hakkimda", label: "Hakkımda" },
-  { href: "#yetenekler", label: "Yetenekler" },
-  { href: "#galeri", label: "Galeri" },
+  { href: "#hizmetler", label: "Hizmetler" },
+  { href: "#surec", label: "Süreç" },
+  { href: "#paketler", label: "Paketler" },
   { href: "#projeler", label: "Projeler" },
+  { href: "#sss", label: "SSS" },
   { href: "#iletisim", label: "İletişim" },
 ];
 
@@ -22,7 +24,7 @@ export default function Navbar() {
     >
       <nav className="section-container flex h-16 items-center justify-between">
         <Link href="#" className="text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200">
-          M.E.T Premium
+          MET Software Studio
         </Link>
         <div className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (

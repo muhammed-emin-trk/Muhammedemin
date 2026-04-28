@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const quickStats = [
-  { label: "Tecrübe", value: "7+ Yıl" },
-  { label: "Meslek", value: "Hemşire & Fotoğrafçı" },
-  { label: "Lokasyon", value: "Bursa / İstanbul" },
+  { label: "Teslim Edilen Projeler", value: "30+" },
+  { label: "Müşteri Memnuniyeti", value: "%98" },
+  { label: "Destek Süresi", value: "7/24" },
+  { label: "Ana Uzmanlık", value: "Web Uygulamaları" },
 ];
 
 export default function Hero() {
@@ -19,34 +20,36 @@ export default function Hero() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="glass-card mx-auto max-w-5xl"
+          className="glass-card mx-auto max-w-6xl"
         >
-          <div className="grid items-center gap-10 md:grid-cols-[1.3fr_1fr]">
+          <div className="grid items-center gap-10 md:grid-cols-[1.35fr_1fr]">
             <div>
-              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-brand-indigo">Premium CV Website</p>
-              <h1 className="text-3xl font-bold leading-tight sm:text-5xl">Muhammed Emin Türkoğlu</h1>
-              <h2 className="mt-4 text-lg text-slate-700 dark:text-slate-300 sm:text-2xl">Hemşire • Gönüllü • Fotoğraf Odaklı İçerik Üreticisi</h2>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-brand-indigo">Premium Software Studio</p>
+              <h1 className="text-3xl font-bold leading-tight sm:text-5xl">Muhammed Emin Türk</h1>
+              <h2 className="mt-4 text-lg text-slate-700 dark:text-slate-300 sm:text-2xl">
+                Yazılım • Program Geliştirme • Marka Güveni Odaklı Dijital Çözümler
+              </h2>
               <p className="mt-6 max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
-                Sağlık tecrübemi, gönüllülük projelerimi ve estetik bakış açımı tek bir güçlü kişisel marka çatısı altında
-                birleştiriyorum. İnsanlara dokunan, güven veren ve modern görünen dijital deneyimler tasarlıyorum.
+                Kurumsal güven oluşturan, satış dönüşümünü artıran ve premium algı yaratan modern web siteleri geliştiriyorum.
+                Hız, SEO, güvenlik, kullanıcı deneyimi ve sürdürülebilir teknik mimariyi tek pakette sunuyorum.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
-                  href="#galeri"
+                  href="#hizmetler"
                   className="rounded-full bg-gradient-to-r from-brand-blue to-brand-indigo px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-105"
                 >
-                  Fotoğraf Galerisi
+                  Hizmetleri Keşfet
                 </Link>
                 <Link
                   href="#iletisim"
                   className="rounded-full border border-slate-300 bg-white/80 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:scale-105 hover:border-brand-purple hover:text-brand-purple dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-100"
                 >
-                  İletişime Geç
+                  Teklif Al
                 </Link>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-1">
               {quickStats.map((stat) => (
                 <div key={stat.label} className="rounded-2xl border border-white/40 bg-white/70 p-4 dark:border-slate-700/50 dark:bg-slate-900/60">
                   <p className="text-xs uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">{stat.label}</p>
