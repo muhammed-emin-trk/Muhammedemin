@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
-import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import { SiteShell } from "@/components/shared/site-shell";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Muhammed Emin Türkoğlu | Kişisel Marka",
-  description: "Hemşirelik, yazılım ve dijital strateji odağında premium kişisel marka deneyimi.",
+  title: "Muhammed Emin Türkoğlu | Premium Kişisel Marka",
+  description: "Hemşirelik, yazılım ve dijital strateji odağında premium kişisel marka platformu.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="tr" suppressHydrationWarning>
       <body className={GeistSans.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {children}
+          <SiteShell>{children}</SiteShell>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>

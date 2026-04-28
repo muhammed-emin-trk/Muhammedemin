@@ -1,10 +1,88 @@
-generator client { provider = "prisma-client-js" }
-datasource db { provider = "sqlite" url = env("DATABASE_URL") }
-model User { id String @id @default(cuid()) email String @unique password String role String @default("admin") }
-model Project { id String @id @default(cuid()) slug String @unique title String description String content String coverImage String gallery String tags String category String featured Boolean @default(false) order Int @default(0) createdAt DateTime @default(now()) }
-model BlogPost { id String @id @default(cuid()) slug String @unique title String excerpt String content String coverImage String published Boolean @default(false) readingTime Int @default(1) createdAt DateTime @default(now()) }
-model Service { id String @id @default(cuid()) title String description String icon String order Int @default(0) }
-model Testimonial { id String @id @default(cuid()) name String role String content String avatar String rating Int @default(5) approved Boolean @default(false) }
-model Message { id String @id @default(cuid()) name String email String subject String message String read Boolean @default(false) createdAt DateTime @default(now()) }
-model SiteSettings { id String @id @default(cuid()) key String @unique value String }
-model Image { id String @id @default(cuid()) url String alt String uploadedAt DateTime @default(now()) }
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  name     String?
+  email    String @unique
+  password String
+  role     String @default("admin")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  content     String
+  coverImage  String
+  gallery     String
+  tags        String
+  category    String
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String
+  coverImage  String
+  tags        String?
+  published   Boolean  @default(false)
+  readingTime Int      @default(1)
+  createdAt   DateTime @default(now())
+}
+
+model Service {
+  id          String @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  order       Int    @default(0)
+}
+
+model Testimonial {
+  id       String  @id @default(cuid())
+  name     String
+  role     String
+  content  String
+  avatar   String
+  rating   Int     @default(5)
+  approved Boolean @default(false)
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model Image {
+  id         String   @id @default(cuid())
+  url        String
+  alt        String
+  width      Int?
+  height     Int?
+  size       Int?
+  uploadedAt DateTime @default(now())
+}
