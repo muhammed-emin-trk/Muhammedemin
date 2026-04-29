@@ -37,6 +37,13 @@ const certificates = [
   { title: "Google Analytics 4", year: 2024 },
 ];
 
+const personalPhotos = [
+  { src: "/images/muhammed-galata.jpg", alt: "Galata Kulesi manzarasında otururken Muhammed Emin" },
+  { src: "/images/muhammed-iskele.jpg", alt: "Taş duvar ve sahil kenarında Muhammed Emin" },
+  { src: "/images/muhammed-ortakoy.jpg", alt: "Boğaz kıyısında tarihi yapı önünde Muhammed Emin" },
+  { src: "/images/muhammed-yagmur.jpg", alt: "Yağmurlu havada şemsiye ile sahil yürüyüşünde Muhammed Emin" },
+];
+
 export const metadata = { title: "Hakkımda" };
 
 export default function Page() {
@@ -59,14 +66,37 @@ export default function Page() {
             <div className="relative">
               <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-tr from-brand-bronze/30 via-brand-gold/20 to-transparent blur-2xl" />
               <Image
-                src="https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&w=900&q=80"
-                alt="Portre"
+                src={personalPhotos[0].src}
+                alt={personalPhotos[0].alt}
                 width={800}
                 height={1000}
                 className="rounded-[32px] border border-brand-gold/40 object-cover shadow-deep"
+                priority
               />
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="section-container section-block">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.3em] text-brand-bronze">Fotoğraflar</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold text-brand-ink md:text-5xl dark:text-brand-cream">Güncel Kareler</h2>
+        </Reveal>
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          {personalPhotos.map((photo, i) => (
+            <Reveal key={photo.src} delay={i * 0.06}>
+              <div className="overflow-hidden rounded-[28px] border border-brand-gold/30 shadow-deep">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  width={1200}
+                  height={1600}
+                  className="h-[520px] w-full object-cover transition duration-500 hover:scale-[1.02]"
+                />
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -85,10 +115,7 @@ export default function Page() {
                 </span>
                 <p className="text-xs uppercase tracking-[0.3em] text-brand-mist">{t.year}</p>
                 <h3 className="mt-1 font-display text-2xl text-brand-ink dark:text-brand-cream">{t.title}</h3>
-                <p
-                  className="mt-2 max-w-2xl text-brand-mist dark:text-brand-cream/75"
-                  dangerouslySetInnerHTML={{ __html: t.desc }}
-                />
+                <p className="mt-2 max-w-2xl text-brand-mist dark:text-brand-cream/75" dangerouslySetInnerHTML={{ __html: t.desc }} />
               </li>
             </Reveal>
           ))}
