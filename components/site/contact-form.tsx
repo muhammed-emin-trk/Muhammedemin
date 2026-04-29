@@ -1,18 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Check, Loader2 } from "lucide-react";
+import { Send, Check, Loader2, AlertCircle } from "lucide-react";
 
 export function ContactForm() {
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
+  const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setState("loading");
-    await new Promise((r) => setTimeout(r, 900));
-    setState("ok");
-    (e.target as HTMLFormElement).reset();
-    setTimeout(() => setState("idle"), 4000);
+    setError(null);
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      name: String(fd.get("name") || ""),
+      email: String(fd.get("email") || ""),
+      subject: String(fd.get("subject") || ""),
+      message: String(fd.get("message") || ""),
+    };
+    try {
+      const r = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) {
+        const j = await r.json().catch(() => ({}));
+        throw new Error(j.error || "Mesaj iletilemedi");
+      }
+      setState("ok");
+      (e.target as HTMLFormElement).reset();
+      setTimeout(() => setState("idle"), 5000);
+    } catch (err: any) {
+      setState("err");
+      setError(err.message || "Bir hata oluştu.");
+    }
   }
 
   return (
@@ -21,7 +43,7 @@ export function ContactForm() {
         <Field label="Adınız" name="name" placeholder="Adınız Soyadınız" required />
         <Field label="E-posta" name="email" type="email" placeholder="ornek@mail.com" required />
       </div>
-      <Field label="Konu" name="subject" placeholder="Projenizden bahsedin" required />
+      <Field label="Konu" name="subject" placeholder="Projenizden bahsedin" />
       <label className="grid gap-2 text-sm">
         <span className="font-medium text-brand-ink dark:text-brand-cream">Mesajınız</span>
         <textarea
@@ -44,6 +66,11 @@ export function ContactForm() {
 
       {state === "ok" && (
         <p className="text-sm text-brand-bronze">Teşekkürler! 24 saat içinde dönüş yapacağım.</p>
+      )}
+      {state === "err" && error && (
+        <p className="inline-flex items-center gap-2 text-sm text-rose-600">
+          <AlertCircle size={14} /> {error}
+        </p>
       )}
     </form>
   );

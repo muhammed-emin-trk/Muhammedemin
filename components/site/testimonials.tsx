@@ -5,9 +5,10 @@ import Image from "next/image";
 import { Star, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 import { Reveal } from "@/components/shared/reveal";
-import { testimonials } from "@/lib/content";
 
-export function Testimonials() {
+type T = { id: number; name: string; role: string | null; avatar: string | null; content: string | null; rating: number };
+
+export function Testimonials({ items: data }: { items: T[] }) {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const media = window.matchMedia("(max-width: 768px)");
@@ -17,7 +18,8 @@ export function Testimonials() {
     return () => media.removeEventListener("change", onChange);
   }, []);
 
-  const items = [...testimonials, ...testimonials];
+  if (!data?.length) return null;
+  const items = [...data, ...data];
   return (
     <section className="section-block">
       <div className="section-container">
@@ -39,25 +41,31 @@ export function Testimonials() {
         >
           {items.map((t, i) => (
             <article
-              key={`${t.name}-${i}`}
+              key={`${t.id}-${i}`}
               className="glass-card flex w-[360px] shrink-0 flex-col gap-4 p-6 md:w-[420px]"
             >
               <Quote className="text-brand-gold" />
               <p className="text-brand-charcoal dark:text-brand-cream/90">{t.content}</p>
               <div className="mt-auto flex items-center gap-3 pt-3">
-                <Image
-                  src={t.avatar}
-                  alt={t.name}
-                  width={48}
-                  height={48}
-                  className="h-12 w-12 rounded-full object-cover ring-2 ring-brand-gold/40"
-                />
+                {t.avatar ? (
+                  <Image
+                    src={t.avatar}
+                    alt={t.name}
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-full object-cover ring-2 ring-brand-gold/40"
+                  />
+                ) : (
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-brand-gold/30 font-display text-brand-bronze ring-2 ring-brand-gold/40">
+                    {t.name.charAt(0)}
+                  </div>
+                )}
                 <div>
                   <p className="font-medium text-brand-ink dark:text-brand-cream">{t.name}</p>
                   <p className="text-xs text-brand-mist">{t.role}</p>
                 </div>
                 <div className="ml-auto flex gap-0.5 text-brand-gold">
-                  {Array.from({ length: t.rating }).map((_, k) => (
+                  {Array.from({ length: t.rating || 5 }).map((_, k) => (
                     <Star key={k} size={14} fill="currentColor" />
                   ))}
                 </div>

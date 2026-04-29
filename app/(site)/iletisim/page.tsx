@@ -1,23 +1,27 @@
 import { Mail, Phone, MapPin, Github, Linkedin, Instagram, MessageCircle } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactForm } from "@/components/site/contact-form";
+import { getSettings } from "@/lib/queries";
 
 export const metadata = { title: "İletişim" };
+export const revalidate = 60;
 
-const channels = [
-  { icon: Mail, label: "E-posta", value: "muhammedeminturk.16@gmail.com", href: "mailto:muhammedeminturk.16@gmail.com" },
-  { icon: Phone, label: "Telefon", value: "0546 285 18 26", href: "tel:+905462851826" },
-  { icon: MessageCircle, label: "WhatsApp", value: "Hemen yaz", href: "https://wa.me/905462851826" },
-  { icon: MapPin, label: "Konum", value: "Osmangazi, Bursa, Türkiye", href: "#" },
-];
+export default async function Page() {
+  const s = await getSettings();
 
-const socials = [
-  { icon: Github, href: "https://github.com" },
-  { icon: Linkedin, href: "https://tr.linkedin.com/in/muhammed-emin-t%C3%BCrko%C4%9Flu-82080b1ba" },
-  { icon: Instagram, href: "https://www.instagram.com/emin.trkoglu?igsh=MTRnbWJ4MWM5dmdydw%3D%3D&utm_source=qr" },
-];
+  const channels = [
+    s.email && { icon: Mail, label: "E-posta", value: s.email, href: `mailto:${s.email}` },
+    s.phone && { icon: Phone, label: "Telefon", value: s.phone, href: `tel:${s.phone.replace(/\s/g, "")}` },
+    s.whatsapp && { icon: MessageCircle, label: "WhatsApp", value: "Hemen yaz", href: s.whatsapp },
+    s.location && { icon: MapPin, label: "Konum", value: s.location, href: "#" },
+  ].filter(Boolean) as { icon: any; label: string; value: string; href: string }[];
 
-export default function Page() {
+  const socials = [
+    s.github && { icon: Github, href: s.github },
+    s.linkedin && { icon: Linkedin, href: s.linkedin },
+    s.instagram && { icon: Instagram, href: s.instagram },
+  ].filter(Boolean) as { icon: any; href: string }[];
+
   return (
     <main>
       <section className="section-container pt-36 md:pt-44">
@@ -57,24 +61,26 @@ export default function Page() {
                 </a>
               </Reveal>
             ))}
-            <Reveal delay={0.3}>
-              <div className="glass-card p-5">
-                <p className="text-xs uppercase tracking-[0.2em] text-brand-mist">Sosyal Medya</p>
-                <div className="mt-3 flex gap-3">
-                  {socials.map((s, i) => (
-                    <a
-                      key={i}
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="grid h-11 w-11 place-items-center rounded-full border border-brand-gold/40 text-brand-bronze transition hover:-translate-y-0.5 hover:bg-brand-bronze hover:text-white"
-                    >
-                      <s.icon size={16} />
-                    </a>
-                  ))}
+            {socials.length > 0 && (
+              <Reveal delay={0.3}>
+                <div className="glass-card p-5">
+                  <p className="text-xs uppercase tracking-[0.2em] text-brand-mist">Sosyal Medya</p>
+                  <div className="mt-3 flex gap-3">
+                    {socials.map((s, i) => (
+                      <a
+                        key={i}
+                        href={s.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="grid h-11 w-11 place-items-center rounded-full border border-brand-gold/40 text-brand-bronze transition hover:-translate-y-0.5 hover:bg-brand-bronze hover:text-white"
+                      >
+                        <s.icon size={16} />
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            )}
           </div>
         </div>
       </section>

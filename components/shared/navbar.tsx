@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-const links = [
+const baseLinks = [
   { href: "/", label: "Anasayfa" },
   { href: "/hakkimda", label: "Hakkımda" },
   { href: "/projeler", label: "Projeler" },
@@ -31,8 +31,9 @@ function ThemeButton() {
   );
 }
 
-export function Navbar() {
+export function Navbar({ extraLinks = [] }: { extraLinks?: { href: string; label: string }[] }) {
   const pathname = usePathname();
+  const links = [...baseLinks, ...extraLinks];
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 

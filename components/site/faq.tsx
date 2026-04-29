@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/shared/reveal";
-import { faq } from "@/lib/content";
 
-export function Faq() {
+type F = { id: number; question: string; answer: string | null };
+
+export function Faq({ items }: { items: F[] }) {
   const [open, setOpen] = useState<number | null>(0);
+  if (!items?.length) return null;
   return (
     <section className="section-container section-block">
       <div className="grid gap-12 lg:grid-cols-12">
@@ -24,15 +26,15 @@ export function Faq() {
         </div>
         <div className="lg:col-span-7">
           <ul className="divide-y divide-brand-gold/20 rounded-3xl border border-brand-gold/30 bg-white/70 backdrop-blur dark:bg-white/[0.04]">
-            {faq.map((item, i) => {
+            {items.map((item, i) => {
               const isOpen = open === i;
               return (
-                <li key={item.q}>
+                <li key={item.id}>
                   <button
                     onClick={() => setOpen(isOpen ? null : i)}
                     className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                   >
-                    <span className="font-medium text-brand-ink dark:text-brand-cream">{item.q}</span>
+                    <span className="font-medium text-brand-ink dark:text-brand-cream">{item.question}</span>
                     <span
                       className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border border-brand-gold/40 transition ${
                         isOpen ? "rotate-45 bg-brand-bronze text-white" : "text-brand-bronze"
@@ -50,7 +52,7 @@ export function Faq() {
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <p className="px-6 pb-6 text-brand-mist dark:text-brand-cream/75">{item.a}</p>
+                        <p className="px-6 pb-6 text-brand-mist dark:text-brand-cream/75">{item.answer}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>

@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
-import { posts } from "@/lib/content";
+import type { Post } from "@/lib/queries";
 
-export function BlogPreview() {
+export function BlogPreview({ posts }: { posts: Post[] }) {
   const latest = posts.slice(0, 3);
+  if (latest.length === 0) return null;
   return (
     <section className="section-container section-block">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -31,7 +32,7 @@ export function BlogPreview() {
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
-                  src={p.cover}
+                  src={p.cover || ""}
                   alt={p.title}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
@@ -41,7 +42,7 @@ export function BlogPreview() {
               <div className="space-y-3 p-6">
                 <div className="flex items-center gap-3 text-xs text-brand-mist">
                   <span>{new Date(p.date).toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" })}</span>
-                  <span className="flex items-center gap-1"><Clock size={12} /> {p.readingMinutes} dk</span>
+                  <span className="flex items-center gap-1"><Clock size={12} /> {p.reading_minutes} dk</span>
                 </div>
                 <h3 className="font-display text-xl text-brand-ink transition group-hover:text-brand-bronze dark:text-brand-cream">{p.title}</h3>
                 <p className="text-sm text-brand-mist dark:text-brand-cream/70">{p.excerpt}</p>

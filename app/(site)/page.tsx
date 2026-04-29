@@ -13,11 +13,22 @@ import { TrustMarquee } from "@/components/site/marquee";
 import { BlogPreview } from "@/components/site/blog-preview";
 import { Faq } from "@/components/site/faq";
 import { ContactCta } from "@/components/site/contact-cta";
+import { getProjects, getPosts, getTestimonials, getFaqs, getSettings } from "@/lib/queries";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const [projects, posts, testimonials, faqs, settings] = await Promise.all([
+    getProjects(),
+    getPosts(),
+    getTestimonials(),
+    getFaqs(),
+    getSettings(),
+  ]);
+
   return (
     <main>
-      <Hero />
+      <Hero settings={settings} />
       <Stats />
       <TrustMarquee />
       <About />
@@ -25,12 +36,12 @@ export default function HomePage() {
       <TechStack />
       <Services />
       <Process />
-      <ProjectsPreview />
+      <ProjectsPreview projects={projects} />
       <Achievements />
       <Journey />
-      <Testimonials />
-      <BlogPreview />
-      <Faq />
+      <Testimonials items={testimonials} />
+      <BlogPreview posts={posts} />
+      <Faq items={faqs} />
       <ContactCta />
     </main>
   );

@@ -17,7 +17,7 @@ function ScrollProgress() {
 }
 
 function NoiseOverlay() {
-  return <div aria-hidden className="noise-overlay pointer-events-none fixed inset-0 z-[1] opacity-[0.035] mix-blend-multiply" />;
+  return <div aria-hidden className="noise-overlay pointer-events-none fixed inset-0 z-[1] opacity-[0.035] mix-blend-multiply hidden md:block" />;
 }
 
 function AmbientBlobs() {
@@ -30,7 +30,9 @@ function AmbientBlobs() {
   );
 }
 
-export function SiteShell({ children }: { children: React.ReactNode }) {
+type Extra = { href: string; label: string };
+
+export function SiteShell({ children, extraLinks }: { children: React.ReactNode; extraLinks?: Extra[] }) {
   return (
     <div className="relative">
       <CursorGlow />
@@ -38,7 +40,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <NoiseOverlay />
       <ScrollProgress />
       <div className="relative z-[2]">
-        <Navbar />
+        <Navbar extraLinks={extraLinks} />
         {children}
         <Footer />
       </div>

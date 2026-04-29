@@ -4,22 +4,26 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Calendar, User, Tag } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactCta } from "@/components/site/contact-cta";
-import { projects } from "@/lib/content";
+import { getProjects, getProjectBySlug } from "@/lib/queries";
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const projects = await getProjects();
   return projects.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.slug === params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const project = await getProjectBySlug(params.slug);
   return { title: project?.title ?? "Proje" };
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
-  const idx = projects.findIndex((p) => p.slug === params.slug);
+export default async function Page({ params }: { params: { slug: string } }) {
+  const all = await getProjects();
+  const idx = all.findIndex((p) => p.slug === params.slug);
   if (idx === -1) notFound();
-  const p = projects[idx];
-  const next = projects[(idx + 1) % projects.length];
+  const p = all[idx];
+  const next = all[(idx + 1) % all.length];
 
   return (
     <main>
@@ -35,22 +39,24 @@ export default function Page({ params }: { params: { slug: string } }) {
           <p className="mt-4 max-w-2xl text-lg text-brand-mist dark:text-brand-cream/80">{p.description}</p>
 
           <div className="mt-8 flex flex-wrap gap-4 text-sm text-brand-mist">
-            <span className="inline-flex items-center gap-2"><Calendar size={14} /> {p.year}</span>
-            <span className="inline-flex items-center gap-2"><User size={14} /> {p.role}</span>
-            <span className="inline-flex items-center gap-2"><Tag size={14} /> {p.tags.join(" · ")}</span>
+            {p.year && <span className="inline-flex items-center gap-2"><Calendar size={14} /> {p.year}</span>}
+            {p.role && <span className="inline-flex items-center gap-2"><User size={14} /> {p.role}</span>}
+            {p.tags.length > 0 && <span className="inline-flex items-center gap-2"><Tag size={14} /> {p.tags.join(" · ")}</span>}
           </div>
         </Reveal>
       </section>
 
-      <section className="section-container mt-12">
-        <Reveal>
-          <div className="overflow-hidden rounded-[32px] border border-brand-gold/30">
-            <Image src={p.cover} alt={p.title} width={1600} height={1000} className="h-full w-full object-cover" />
-          </div>
-        </Reveal>
-      </section>
+      {p.cover && (
+        <section className="section-container mt-12">
+          <Reveal>
+            <div className="overflow-hidden rounded-[32px] border border-brand-gold/30">
+              <Image src={p.cover} alt={p.title} width={1600} height={1000} priority className="h-full w-full object-cover" />
+            </div>
+          </Reveal>
+        </section>
+      )}
 
-      <section className="section-container section-block">
+      <article className="section-container section-block">
         <div className="mx-auto max-w-3xl space-y-6 text-lg leading-relaxed text-brand-charcoal dark:text-brand-cream/90">
           {p.content.map((para, i) => (
             <Reveal key={i} delay={i * 0.05}>
@@ -58,24 +64,26 @@ export default function Page({ params }: { params: { slug: string } }) {
             </Reveal>
           ))}
         </div>
-      </section>
+      </article>
 
-      <section className="section-container section-block">
-        <Reveal>
-          <Link
-            href={`/projeler/${next.slug}`}
-            className="group block overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/70 p-8 transition hover:-translate-y-1 hover:shadow-glass dark:bg-white/[0.04]"
-          >
-            <p className="text-xs uppercase tracking-[0.3em] text-brand-bronze">Sonraki Proje</p>
-            <div className="mt-3 flex items-center justify-between gap-4">
-              <h3 className="font-display text-3xl text-brand-ink dark:text-brand-cream">{next.title}</h3>
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-brand-bronze text-white transition group-hover:rotate-45">
-                <ArrowUpRight />
-              </span>
-            </div>
-          </Link>
-        </Reveal>
-      </section>
+      {next && next.slug !== p.slug && (
+        <section className="section-container section-block">
+          <Reveal>
+            <Link
+              href={`/projeler/${next.slug}`}
+              className="group block overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/70 p-8 transition hover:-translate-y-1 hover:shadow-glass dark:bg-white/[0.04]"
+            >
+              <p className="text-xs uppercase tracking-[0.3em] text-brand-bronze">Sonraki Proje</p>
+              <div className="mt-3 flex items-center justify-between gap-4">
+                <h3 className="font-display text-3xl text-brand-ink dark:text-brand-cream">{next.title}</h3>
+                <span className="grid h-12 w-12 place-items-center rounded-full bg-brand-bronze text-white transition group-hover:rotate-45">
+                  <ArrowUpRight />
+                </span>
+              </div>
+            </Link>
+          </Reveal>
+        </section>
+      )}
 
       <ContactCta />
     </main>

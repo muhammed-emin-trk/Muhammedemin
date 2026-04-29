@@ -1,104 +1,92 @@
-"use client";
+import Link from "next/link";
+import { query } from "@/lib/db";
+import { FolderKanban, BookOpen, FileText, Mail, Image as ImageIcon, ArrowUpRight } from "lucide-react";
 
-import { useEffect, useState } from "react";
-import { PERSONAL_PHOTOS_KEY, type PersonalPhoto } from "@/components/site/personal-photos";
-
-const emptySlot = (): PersonalPhoto => ({ src: "", alt: "" });
-
-const toOptimizedDataUrl = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error("Dosya okunamadı"));
-    reader.onload = () => {
-      const image = new Image();
-      image.onerror = () => reject(new Error("Görsel işlenemedi"));
-      image.onload = () => {
-        const maxSide = 1600;
-        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
-        const width = Math.max(1, Math.round(image.width * scale));
-        const height = Math.max(1, Math.round(image.height * scale));
-
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return reject(new Error("Canvas başlatılamadı"));
-
-        ctx.drawImage(image, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", 0.82));
-      };
-      if (typeof reader.result !== "string") return reject(new Error("Dosya okunamadı"));
-      image.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-
-
-export default function AdminPage() {
-  const [photos, setPhotos] = useState<PersonalPhoto[]>([emptySlot(), emptySlot(), emptySlot(), emptySlot()]);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(PERSONAL_PHOTOS_KEY);
-    if (!stored) return;
-    try {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        const normalized = [...parsed, emptySlot(), emptySlot(), emptySlot(), emptySlot()].slice(0, 4);
-        setPhotos(normalized);
-      }
-    } catch {}
-  }, []);
-
-  const onFileChange = async (index: number, file?: File) => {
-    if (!file) return;
-    setError(null);
-    try {
-      const src = await toOptimizedDataUrl(file);
-      setPhotos((prev) => prev.map((p, i) => (i === index ? { ...p, src } : p)));
-    } catch {
-      setError("Görsel yüklenirken bir sorun oluştu. Lütfen tekrar deneyin.");
-    }
+async function getStats() {
+  const [p, b, m, mu, pg, ph] = await Promise.all([
+    query("SELECT count(*)::int c FROM projects"),
+    query("SELECT count(*)::int c FROM posts"),
+    query("SELECT count(*)::int c FROM messages"),
+    query("SELECT count(*)::int c FROM messages WHERE is_read=false"),
+    query("SELECT count(*)::int c FROM pages"),
+    query("SELECT count(*)::int c FROM personal_photos"),
+  ]);
+  return {
+    projects: p[0]?.c ?? 0,
+    posts: b[0]?.c ?? 0,
+    messages: m[0]?.c ?? 0,
+    unread: mu[0]?.c ?? 0,
+    pages: pg[0]?.c ?? 0,
+    photos: ph[0]?.c ?? 0,
   };
+}
 
-  const save = () => {
-    const filtered = photos.filter((p) => p.src.trim().length > 0).map((p) => ({ src: p.src, alt: p.alt || "Kişisel fotoğraf" }));
-    setError(null);
-    try {
-      localStorage.setItem(PERSONAL_PHOTOS_KEY, JSON.stringify(filtered));
-      setSaved(true);
-      setTimeout(() => setSaved(false), 1800);
-    } catch {
-      setSaved(false);
-      setError("Kaydetme başarısız oldu. Daha küçük görseller seçip tekrar deneyin.");
-    }
-  };
+async function recentMessages() {
+  return await query<any>("SELECT id,name,email,subject,is_read,created_at FROM messages ORDER BY created_at DESC LIMIT 5");
+}
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminHome() {
+  const s = await getStats();
+  const recent = await recentMessages();
+
+  const cards = [
+    { label: "Projeler", value: s.projects, href: "/admin/projeler", icon: FolderKanban, grad: "from-amber-500 to-orange-500" },
+    { label: "Blog Yazıları", value: s.posts, href: "/admin/blog", icon: BookOpen, grad: "from-rose-500 to-pink-500" },
+    { label: "Sayfalar", value: s.pages, href: "/admin/sayfalar", icon: FileText, grad: "from-violet-500 to-purple-500" },
+    { label: "Mesajlar", value: s.messages, sub: `${s.unread} okunmamış`, href: "/admin/mesajlar", icon: Mail, grad: "from-emerald-500 to-teal-500" },
+    { label: "Fotoğraflar", value: s.photos, href: "/admin/fotograflar", icon: ImageIcon, grad: "from-sky-500 to-cyan-500" },
+  ];
 
   return (
-    <main className="section-container pt-36 pb-20">
-      <h1 className="font-display text-4xl text-brand-ink dark:text-brand-cream">Admin · Fotoğraf Seçimi</h1>
-      <p className="mt-3 text-brand-mist">Buradan görselleri yükleyip Hakkımda sayfasında gösterilecek fotoğrafları yönetebilirsin.</p>
+    <div className="space-y-8">
+      <header>
+        <p className="text-xs uppercase tracking-[0.3em] text-amber-600">Hoş geldin</p>
+        <h1 className="mt-2 font-display text-3xl font-semibold md:text-4xl">Bugünden ne yapmak istersin?</h1>
+        <p className="mt-2 text-slate-500">Her şey buradan: projeler, blog, mesajlar ve sayfa içerikleri tek panelde.</p>
+      </header>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-        {photos.map((photo, index) => (
-          <div key={index} className="glass-card p-5">
-            <p className="mb-3 text-sm text-brand-mist">Fotoğraf {index + 1}</p>
-            <input type="file" accept="image/*" onChange={(e) => onFileChange(index, e.target.files?.[0])} />
-            <input
-              className="mt-3 w-full rounded-xl border border-brand-gold/30 bg-transparent px-3 py-2 text-sm"
-              placeholder="Alt metin"
-              value={photo.alt}
-              onChange={(e) => setPhotos((prev) => prev.map((p, i) => (i === index ? { ...p, alt: e.target.value } : p)))}
-            />
-            {photo.src ? <img src={photo.src} alt={photo.alt || `Fotoğraf ${index + 1}`} className="mt-4 h-40 w-full rounded-xl object-cover" /> : null}
-          </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((c) => (
+          <Link
+            key={c.href}
+            href={c.href}
+            className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+          >
+            <div className={`absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br ${c.grad} opacity-20 blur-2xl transition group-hover:opacity-40`} />
+            <div className={`relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${c.grad} text-white shadow`}>
+              <c.icon size={20} />
+            </div>
+            <p className="mt-4 text-xs uppercase tracking-[0.25em] text-slate-500">{c.label}</p>
+            <p className="mt-1 font-display text-3xl font-semibold">{c.value}</p>
+            {c.sub && <p className="mt-1 text-sm text-amber-600">{c.sub}</p>}
+            <ArrowUpRight className="absolute right-5 top-5 text-slate-400 transition group-hover:rotate-45 group-hover:text-amber-500" size={18} />
+          </Link>
         ))}
       </div>
 
-      <button onClick={save} className="mt-8 rounded-full bg-brand-bronze px-6 py-3 text-white">Kaydet</button>
-      {saved ? <p className="mt-3 text-sm text-green-600">Kaydedildi. Hakkımda sayfasını yenileyebilirsin.</p> : null}
-      {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
-    </main>
+      <section className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <header className="flex items-center justify-between border-b border-slate-200 p-5 dark:border-slate-800">
+          <h2 className="font-display text-xl font-semibold">Son Mesajlar</h2>
+          <Link href="/admin/mesajlar" className="text-sm text-amber-600 hover:underline">Tümü →</Link>
+        </header>
+        <ul className="divide-y divide-slate-200 dark:divide-slate-800">
+          {recent.length === 0 && <li className="p-8 text-center text-slate-500">Henüz mesaj yok.</li>}
+          {recent.map((m: any) => (
+            <li key={m.id} className="flex items-center justify-between gap-4 p-5">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="truncate font-medium">{m.name}</p>
+                  {!m.is_read && <span className="rounded-full bg-amber-500 px-2 py-0.5 text-xs font-medium text-white">Yeni</span>}
+                </div>
+                <p className="truncate text-sm text-slate-500">{m.subject || m.email}</p>
+              </div>
+              <span className="shrink-0 text-xs text-slate-400">{new Date(m.created_at).toLocaleDateString("tr-TR")}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 }

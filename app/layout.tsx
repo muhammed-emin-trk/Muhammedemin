@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { SiteShell } from "@/components/shared/site-shell";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
@@ -28,9 +27,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Muhammed Emin Türkoğlu", url: "https://www.muhammedeminturk.com.tr" }],
   creator: "Muhammed Emin Türkoğlu",
   publisher: "Muhammed Emin Türkoğlu",
-  alternates: {
-    canonical: "/",
-  },
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Muhammed Emin Türkoğlu",
     description: "Sağlığa şefkat, kodlara hassasiyet.",
@@ -53,9 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: "Muhammed Emin Türkoğlu",
     url: "https://www.muhammedeminturk.com.tr",
     sameAs: [
-      "https://www.instagram.com/emin.trkoglu?igsh=MTRnbWJ4MWM5dmdydw%3D%3D&utm_source=qr"
+      "https://www.instagram.com/emin.trkoglu?igsh=MTRnbWJ4MWM5dmdydw%3D%3D&utm_source=qr",
     ],
-    jobTitle: "Hemşire & Yazılım Geliştirici"
+    jobTitle: "Hemşire & Yazılım Geliştirici",
   };
 
   return (
@@ -68,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <SiteShell>{children}</SiteShell>
+          {children}
         </ThemeProvider>
       </body>
     </html>

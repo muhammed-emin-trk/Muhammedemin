@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
-import { projects } from "@/lib/content";
+import type { Project } from "@/lib/queries";
 
-export function ProjectsPreview() {
+export function ProjectsPreview({ projects }: { projects: Project[] }) {
   const featured = projects.filter((p) => p.featured).slice(0, 3);
+  if (featured.length === 0) return null;
   return (
     <section className="section-container section-block">
       <div className="flex flex-wrap items-end justify-between gap-6">
@@ -32,7 +33,7 @@ export function ProjectsPreview() {
             >
               <div className="relative aspect-[16/11] overflow-hidden">
                 <Image
-                  src={p.cover}
+                  src={p.cover || ""}
                   alt={p.title}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"

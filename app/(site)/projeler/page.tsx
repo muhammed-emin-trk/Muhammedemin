@@ -3,11 +3,13 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactCta } from "@/components/site/contact-cta";
-import { projects } from "@/lib/content";
+import { getProjects } from "@/lib/queries";
 
 export const metadata = { title: "Projeler" };
+export const revalidate = 60;
 
-export default function Page() {
+export default async function Page() {
+  const projects = await getProjects();
   return (
     <main>
       <section className="section-container pt-36 md:pt-44">
@@ -28,13 +30,15 @@ export default function Page() {
                 className="group block overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/70 transition hover:-translate-y-1 hover:shadow-glass dark:bg-white/[0.04]"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={p.cover}
-                    alt={p.title}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover transition duration-700 group-hover:scale-110"
-                  />
+                  {p.cover ? (
+                    <Image
+                      src={p.cover}
+                      alt={p.title}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition duration-700 group-hover:scale-110"
+                    />
+                  ) : null}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-ink/60 via-transparent to-transparent" />
                   <div className="absolute left-5 top-5 flex flex-wrap gap-2">
                     {p.tags.slice(0, 3).map((t) => (
@@ -62,6 +66,11 @@ export default function Page() {
             </Reveal>
           ))}
         </div>
+        {projects.length === 0 && (
+          <p className="rounded-2xl border border-dashed border-brand-gold/40 p-12 text-center text-brand-mist">
+            Henüz projeler eklenmedi.
+          </p>
+        )}
       </section>
 
       <ContactCta />

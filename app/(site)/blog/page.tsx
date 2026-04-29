@@ -3,11 +3,13 @@ import Link from "next/link";
 import { Clock } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactCta } from "@/components/site/contact-cta";
-import { posts } from "@/lib/content";
+import { getPosts } from "@/lib/queries";
 
 export const metadata = { title: "Blog" };
+export const revalidate = 60;
 
-export default function Page() {
+export default async function Page() {
+  const posts = await getPosts();
   return (
     <main>
       <section className="section-container pt-36 md:pt-44">
@@ -27,13 +29,15 @@ export default function Page() {
                 href={`/blog/${p.slug}`}
                 className="group block overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/70 transition hover:-translate-y-1 hover:shadow-glass dark:bg-white/[0.04]"
               >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image src={p.cover} alt={p.title} fill className="object-cover transition duration-700 group-hover:scale-110" sizes="(min-width: 768px) 50vw, 100vw" />
-                </div>
+                {p.cover && (
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image src={p.cover} alt={p.title} fill className="object-cover transition duration-700 group-hover:scale-110" sizes="(min-width: 768px) 50vw, 100vw" />
+                  </div>
+                )}
                 <div className="space-y-3 p-6">
                   <div className="flex items-center gap-3 text-xs text-brand-mist">
                     <span>{new Date(p.date).toLocaleDateString("tr-TR", { day: "2-digit", month: "long", year: "numeric" })}</span>
-                    <span className="flex items-center gap-1"><Clock size={12} /> {p.readingMinutes} dk</span>
+                    <span className="flex items-center gap-1"><Clock size={12} /> {p.reading_minutes} dk</span>
                   </div>
                   <h3 className="font-display text-2xl text-brand-ink transition group-hover:text-brand-bronze dark:text-brand-cream">{p.title}</h3>
                   <p className="text-brand-mist dark:text-brand-cream/70">{p.excerpt}</p>
@@ -42,6 +46,11 @@ export default function Page() {
             </Reveal>
           ))}
         </div>
+        {posts.length === 0 && (
+          <p className="rounded-2xl border border-dashed border-brand-gold/40 p-12 text-center text-brand-mist">
+            Henüz yazı yok.
+          </p>
+        )}
       </section>
 
       <ContactCta />

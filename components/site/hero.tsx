@@ -15,8 +15,18 @@ const ROLES = [
 
 const NAME_PARTS = ["Muhammed", "Emin", "Türkoğlu"];
 
-export function Hero() {
+type HeroSettings = {
+  hero_badge?: string;
+  hero_title?: string;
+  hero_subtitle?: string;
+  hero_description?: string;
+};
+
+export function Hero({ settings }: { settings?: HeroSettings }) {
   const [roleIndex, setRoleIndex] = useState(0);
+  const badge = settings?.hero_badge || "Osmangazi, Bursa — Yeni fırsatlara açık";
+  const description = settings?.hero_description ||
+    "İnsan odaklı çalışmayı benimseyen; hemşirelik altyapısını dijital ürün yaklaşımıyla birleştiren, sosyal sorumluluk ve fotoğrafçılıkta aktif bir profesyonel.";
 
   useEffect(() => {
     const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), 2400);
@@ -114,7 +124,7 @@ export function Hero() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-mint" />
             </span>
             <MapPin size={12} />
-            Osmangazi, Bursa — Yeni fırsatlara açık
+            {badge}
           </span>
         </motion.div>
 
@@ -161,7 +171,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.7 }}
           className="mx-auto mt-8 max-w-2xl text-center text-lg text-brand-mist md:text-xl dark:text-brand-cream/80"
         >
-          İnsan odaklı çalışmayı benimseyen; hemşirelik altyapısını dijital ürün yaklaşımıyla birleştiren, sosyal sorumluluk ve fotoğrafçılıkta aktif bir profesyonel.
+          {description}
         </motion.p>
 
         <motion.div

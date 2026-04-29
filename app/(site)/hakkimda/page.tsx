@@ -2,6 +2,7 @@ import { GraduationCap, Stethoscope, Code2, Sparkles, Award, Heart } from "lucid
 import { Reveal } from "@/components/shared/reveal";
 import { ContactCta } from "@/components/site/contact-cta";
 import { PersonalHeroPhoto, PersonalPhotosGrid } from "@/components/site/personal-photos";
+import { getPhotos } from "@/lib/queries";
 
 const timeline = [
   {
@@ -37,10 +38,12 @@ const certificates = [
   { title: "Google Analytics 4", year: 2024 },
 ];
 
-
 export const metadata = { title: "Hakkımda" };
+export const revalidate = 60;
 
-export default function Page() {
+export default async function Page() {
+  const photos = await getPhotos();
+
   return (
     <main>
       <section className="section-container pt-36 md:pt-44">
@@ -56,7 +59,7 @@ export default function Page() {
               Hayatımın diğer yarısında ise yazılım, tasarım ve dijital pazarlama ile uğraşıyor; insan odaklı dijital deneyimler kuruyorum.
             </p>
           </Reveal>
-          <PersonalHeroPhoto />
+          <PersonalHeroPhoto photos={photos} />
         </div>
       </section>
 
@@ -65,7 +68,7 @@ export default function Page() {
           <p className="text-xs uppercase tracking-[0.3em] text-brand-bronze">Fotoğraflar</p>
           <h2 className="mt-3 font-display text-4xl font-semibold text-brand-ink md:text-5xl dark:text-brand-cream">Güncel Kareler</h2>
         </Reveal>
-        <PersonalPhotosGrid />
+        <PersonalPhotosGrid photos={photos} />
       </section>
 
       <section className="section-container section-block">
