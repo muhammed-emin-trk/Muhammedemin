@@ -44,7 +44,7 @@ export function Footer() {
             <div className="mt-6 flex flex-wrap gap-3">
               {[
                 { icon: Github, href: "https://github.com" },
-                { icon: Linkedin, href: "https://linkedin.com" },
+                { icon: Linkedin, href: "https://tr.linkedin.com/in/muhammed-emin-t%C3%BCrko%C4%9Flu-82080b1ba" },
                 { icon: Instagram, href: "https://instagram.com/emin.trkoglu" },
                 { icon: Mail, href: "mailto:muhammedeminturk.16@gmail.com" },
               ].map(({ icon: Icon, href }) => (
