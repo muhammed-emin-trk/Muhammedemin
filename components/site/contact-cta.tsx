@@ -31,8 +31,8 @@ export function ContactCta() {
                   <ArrowRight size={16} />
                 </Link>
               </Magnetic>
-              <a href="mailto:hello@meturkoglu.com" className="text-sm text-brand-cream/70 hover:text-brand-cream">
-                hello@meturkoglu.com
+              <a href="mailto:muhammedeminturk.16@gmail.com" className="text-sm text-brand-cream/70 hover:text-brand-cream">
+                muhammedeminturk.16@gmail.com
               </a>
             </div>
           </div>
