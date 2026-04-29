@@ -79,8 +79,8 @@ export function Footer() {
           <div className="md:col-span-3">
             <p className="font-medium text-brand-ink dark:text-brand-cream">İletişim</p>
             <ul className="mt-4 grid gap-3 text-sm text-brand-mist dark:text-brand-cream/70">
-              <li className="flex items-center gap-2"><Mail size={14} /> muhammedeminturk.16@gmail.com</li>
-              <li className="flex items-center gap-2"><Phone size={14} /> 0546 285 18 26</li>
+              <li><a href="mailto:muhammedeminturk.16@gmail.com" className="flex items-center gap-2 hover:text-brand-bronze"><Mail size={14} /> muhammedeminturk.16@gmail.com</a></li>
+              <li><a href="tel:+905462851826" className="flex items-center gap-2 hover:text-brand-bronze"><Phone size={14} /> 0546 285 18 26</a></li>
               <li className="flex items-center gap-2"><MapPin size={14} /> Osmangazi, Bursa</li>
             </ul>
           </div>
