@@ -5,9 +5,39 @@ import { PERSONAL_PHOTOS_KEY, type PersonalPhoto } from "@/components/site/perso
 
 const emptySlot = (): PersonalPhoto => ({ src: "", alt: "" });
 
+const toOptimizedDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Dosya okunamadı"));
+    reader.onload = () => {
+      const image = new Image();
+      image.onerror = () => reject(new Error("Görsel işlenemedi"));
+      image.onload = () => {
+        const maxSide = 1600;
+        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+        const width = Math.max(1, Math.round(image.width * scale));
+        const height = Math.max(1, Math.round(image.height * scale));
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject(new Error("Canvas başlatılamadı"));
+
+        ctx.drawImage(image, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      };
+      if (typeof reader.result !== "string") return reject(new Error("Dosya okunamadı"));
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+
 export default function AdminPage() {
   const [photos, setPhotos] = useState<PersonalPhoto[]>([emptySlot(), emptySlot(), emptySlot(), emptySlot()]);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem(PERSONAL_PHOTOS_KEY);
@@ -21,21 +51,28 @@ export default function AdminPage() {
     } catch {}
   }, []);
 
-  const onFileChange = (index: number, file?: File) => {
+  const onFileChange = async (index: number, file?: File) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const src = typeof reader.result === "string" ? reader.result : "";
+    setError(null);
+    try {
+      const src = await toOptimizedDataUrl(file);
       setPhotos((prev) => prev.map((p, i) => (i === index ? { ...p, src } : p)));
-    };
-    reader.readAsDataURL(file);
+    } catch {
+      setError("Görsel yüklenirken bir sorun oluştu. Lütfen tekrar deneyin.");
+    }
   };
 
   const save = () => {
     const filtered = photos.filter((p) => p.src.trim().length > 0).map((p) => ({ src: p.src, alt: p.alt || "Kişisel fotoğraf" }));
-    localStorage.setItem(PERSONAL_PHOTOS_KEY, JSON.stringify(filtered));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
+    setError(null);
+    try {
+      localStorage.setItem(PERSONAL_PHOTOS_KEY, JSON.stringify(filtered));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    } catch {
+      setSaved(false);
+      setError("Kaydetme başarısız oldu. Daha küçük görseller seçip tekrar deneyin.");
+    }
   };
 
   return (
@@ -61,6 +98,7 @@ export default function AdminPage() {
 
       <button onClick={save} className="mt-8 rounded-full bg-brand-bronze px-6 py-3 text-white">Kaydet</button>
       {saved ? <p className="mt-3 text-sm text-green-600">Kaydedildi. Hakkımda sayfasını yenileyebilirsin.</p> : null}
+      {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
     </main>
   );
 }
