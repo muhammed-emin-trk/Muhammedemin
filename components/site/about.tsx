@@ -5,8 +5,8 @@ import { Reveal } from "@/components/shared/reveal";
 
 const values = [
   { icon: HeartHandshake, title: "Empati", desc: "İnsanı merkeze alan bakım anlayışı" },
-  { icon: Brain, title: "Disiplin", desc: "Klinik hassasiyetle üretim ritmi" },
-  { icon: Sparkles, title: "Yaratıcılık", desc: "Sade ve etkileyici dijital deneyim" },
+  { icon: Brain, title: "Disiplin", desc: "Sahada edinilen düzenli çalışma yaklaşımı" },
+  { icon: Sparkles, title: "Yaratıcılık", desc: "Fotoğrafçılık ve iletişimde güçlü anlatım" },
 ];
 
 export function About() {
@@ -47,14 +47,12 @@ export function About() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 text-lg leading-relaxed text-brand-mist dark:text-brand-cream/80">
-              Uludağ Üniversitesi Hemşirelik bölümünden mezun oldum ve bugün Bursa Şehir Hastanesi&apos;nde hemşire olarak görev yapıyorum.
-              Sağlık alanında insan odaklı yaklaşımı benimserken, ikinci tutkum olan yazılım ve dijital pazarlama dünyasında markaların büyümesine yardımcı oluyorum.
+              Uludağ Üniversitesi&apos;nde hemşirelik eğitimi aldım. Bursa merkezli çalışmalarımda, insan odaklı yaklaşımı sağlık, gönüllülük ve sosyal sorumluluk alanlarında aktif olarak sürdürüyorum.
             </p>
           </Reveal>
           <Reveal delay={0.18}>
             <p className="mt-4 text-lg leading-relaxed text-brand-mist dark:text-brand-cream/80">
-              Next.js, Tailwind ve modern web teknolojileriyle premium hisli, performanslı ve dönüşüm odaklı dijital deneyimler tasarlıyorum.
-              Hedefim; şefkati ve veriyi aynı tasarımda buluşturmak.
+              Avrupa Gönüllü Hizmeti, çocuklarla yürütülen etkinlikler ve sosyal projelerden gelen saha deneyimimi; iletişim gücü, ekip uyumu ve çözüm odaklı bakış açısıyla birleştiriyorum.
             </p>
           </Reveal>
 

@@ -5,10 +5,10 @@ import { ContactForm } from "@/components/site/contact-form";
 export const metadata = { title: "İletişim" };
 
 const channels = [
-  { icon: Mail, label: "E-posta", value: "hello@meturkoglu.com", href: "mailto:hello@meturkoglu.com" },
-  { icon: Phone, label: "Telefon", value: "+90 555 000 00 00", href: "tel:+905550000000" },
-  { icon: MessageCircle, label: "WhatsApp", value: "Hemen yaz", href: "https://wa.me/905550000000" },
-  { icon: MapPin, label: "Konum", value: "Bursa, Türkiye", href: "#" },
+  { icon: Mail, label: "E-posta", value: "muhammedeminturk.16@gmail.com", href: "mailto:muhammedeminturk.16@gmail.com" },
+  { icon: Phone, label: "Telefon", value: "0546 285 18 26", href: "tel:+905462851826" },
+  { icon: MessageCircle, label: "WhatsApp", value: "Hemen yaz", href: "https://wa.me/905462851826" },
+  { icon: MapPin, label: "Konum", value: "Osmangazi, Bursa, Türkiye", href: "#" },
 ];
 
 const socials = [
