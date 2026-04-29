@@ -11,25 +11,9 @@ import { BlogPreview } from "@/components/site/blog-preview";
 import { Faq } from "@/components/site/faq";
 import { ContactCta } from "@/components/site/contact-cta";
 
-
-const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Muhammed Emin Türkoğlu",
-  alternateName: "Muhammed Emin",
-  url: "https://www.muhammedeminturk.com.tr",
-  jobTitle: ["Hemşire", "Yazılım Geliştirici"],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Bursa",
-    addressCountry: "TR",
-  },
-};
-
 export default function HomePage() {
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       <Hero />
       <Stats />
       <TrustMarquee />
