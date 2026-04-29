@@ -34,7 +34,7 @@ export const projects: Project[] = [
     category: "İçerik & E-Ticaret",
     year: 2024,
     role: "Marka & Geliştirme",
-    cover: "https://images.unsplash.com/photo-1551192144-1c95c8e9b95b?auto=format&fit=crop&w=1600&q=80",
+    cover: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1600&q=80",
     description: "Hemşirelere özel premium blog ve dijital ürün mağazası.",
     content: [
       "Türkiye&apos;deki hemşirelerin mesleki gelişimine katkı sağlayan içerik platformu.",
@@ -153,7 +153,7 @@ export const posts: Post[] = [
     slug: "saglik-markalari-icin-icerik",
     title: "Sağlık Markaları İçin Güven Veren İçerik Stratejisi",
     excerpt: "Klinik markaların dijitalde fark yaratmasını sağlayan içerik prensipleri.",
-    cover: "https://images.unsplash.com/photo-1583912267550-d44c9c2d56e1?auto=format&fit=crop&w=1600&q=80",
+    cover: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1600&q=80",
     date: "2026-02-08",
     readingMinutes: 5,
     tags: ["İçerik", "Sağlık"],
