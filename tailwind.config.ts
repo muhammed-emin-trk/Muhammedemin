@@ -8,11 +8,12 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          ink: "#0A0E27",
-          cream: "#F5F1E8",
+          ink: "#3B3125",
+          cream: "#F8F2E8",
           electric: "#0EA5E9",
           mint: "#10B981",
           violet: "#8B5CF6",
+          gold: "#B89662",
         },
       },
     },
