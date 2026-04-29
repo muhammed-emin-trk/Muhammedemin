@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: "Muhammed Emin Türkoğlu",
     url: "https://www.muhammedeminturk.com.tr",
     sameAs: [
-      "https://instagram.com/emin.trkoglu"
+      "https://www.instagram.com/emin.trkoglu?igsh=MTRnbWJ4MWM5dmdydw%3D%3D&utm_source=qr"
     ],
     jobTitle: "Hemşire & Yazılım Geliştirici"
   };
