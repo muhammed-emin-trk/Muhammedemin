@@ -19,7 +19,7 @@ export function About() {
             <div className="relative overflow-hidden rounded-[32px] border border-brand-gold/40 shadow-deep">
               <Image
                 src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80"
-                alt="Sağlık & teknoloji"
+                alt="Muhammed Emin Türkoğlu - Yazılım Geliştirici"
                 width={900}
                 height={1100}
                 className="h-[520px] w-full object-cover"

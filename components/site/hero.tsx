@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Magnetic } from "@/components/shared/magnetic";
 
-const words = ["Sağlık odaklı dijital deneyimler tasarlıyorum.", "Hemşirelik · Gönüllülük · Fotoğrafçılık"];
-
 export function Hero() {
   return (
     <section className="relative overflow-hidden pt-36 md:pt-44">
@@ -31,18 +29,16 @@ export function Hero() {
         </motion.div>
 
         <h1 className="mx-auto max-w-5xl text-center font-display text-[clamp(2.6rem,7vw,6rem)] font-semibold leading-[1.02] tracking-tight text-brand-ink dark:text-brand-cream">
-          {words.map((line, i) => (
-            <span key={line} className="block overflow-hidden">
-              <motion.span
-                className="block"
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.9, delay: 0.1 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {i === 1 ? <span className="text-gradient-gold italic">{line}</span> : line}
-              </motion.span>
-            </span>
-          ))}
+          <span className="block overflow-hidden">
+            <motion.span
+              className="block"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Muhammed Emin Türkoğlu
+            </motion.span>
+          </span>
         </h1>
 
         <motion.p

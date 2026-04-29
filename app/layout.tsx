@@ -10,11 +10,11 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-displa
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.muhammedeminturk.com.tr"),
   title: {
-    default: "Muhammed Emin Türkoğlu — Hemşire & Yazılım Geliştirici",
+    default: "Muhammed Emin Türkoğlu | Yazılım Geliştirici & Portfolyo",
     template: "%s | Muhammed Emin Türkoğlu",
   },
   description:
-    "Bursa Şehir Hastanesi'nde hemşire, aynı zamanda yazılım ve dijital pazarlama tutkunu Muhammed Emin Türkoğlu'nun kişisel web sitesi.",
+    "Muhammed Emin Türkoğlu'nun kişisel portfolyo sitesi: yazılım geliştirici olarak ürettiği projeler, teknik yetkinlikler ve iletişim bilgileri.",
   keywords: [
     "Muhammed Emin",
     "Muhammed Emin Türkoğlu",
@@ -60,14 +60,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="tr" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
-      <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <SiteShell>{children}</SiteShell>
-        </ThemeProvider>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
+      </head>
+      <body className="font-sans">
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <SiteShell>{children}</SiteShell>
+        </ThemeProvider>
       </body>
     </html>
   );
