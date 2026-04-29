@@ -45,7 +45,7 @@ export function Footer() {
               {[
                 { icon: Github, href: "https://github.com" },
                 { icon: Linkedin, href: "https://linkedin.com" },
-                { icon: Instagram, href: "https://instagram.com" },
+                { icon: Instagram, href: "https://instagram.com/emin.trkoglu" },
                 { icon: Mail, href: "mailto:muhammedeminturk.16@gmail.com" },
               ].map(({ icon: Icon, href }) => (
                 <a

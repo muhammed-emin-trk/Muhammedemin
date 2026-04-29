@@ -26,6 +26,8 @@ export const metadata: Metadata = {
     "Bursa",
   ],
   authors: [{ name: "Muhammed Emin Türkoğlu", url: "https://www.muhammedeminturk.com.tr" }],
+  creator: "Muhammed Emin Türkoğlu",
+  publisher: "Muhammed Emin Türkoğlu",
   alternates: {
     canonical: "/",
   },
@@ -45,12 +47,27 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Muhammed Emin Türkoğlu",
+    url: "https://www.muhammedeminturk.com.tr",
+    sameAs: [
+      "https://instagram.com/emin.trkoglu"
+    ],
+    jobTitle: "Hemşire & Yazılım Geliştirici"
+  };
+
   return (
     <html lang="tr" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <SiteShell>{children}</SiteShell>
         </ThemeProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
       </body>
     </html>
   );
