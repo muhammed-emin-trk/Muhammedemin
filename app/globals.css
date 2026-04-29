@@ -2,27 +2,108 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
-.light { color-scheme: light; }
+:root {
+  color-scheme: light;
+  --bg-from: #f8f2e8;
+  --bg-via: #f3eadc;
+  --bg-to: #efe3d1;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg-from: #15110b;
+  --bg-via: #1c1610;
+  --bg-to: #221b13;
+}
+
+* { -webkit-font-smoothing: antialiased; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  @apply antialiased;
-  background: linear-gradient(180deg, #f8f2e8 0%, #f3eadc 55%, #efe3d1 100%);
-  color: #3b3125;
+  @apply text-brand-ink;
+  background: linear-gradient(180deg, var(--bg-from) 0%, var(--bg-via) 50%, var(--bg-to) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
-.section-container { @apply mx-auto max-w-7xl px-6 md:px-10; }
+.dark body { @apply text-brand-cream; }
+
+.section-container { @apply mx-auto w-full max-w-7xl px-6 md:px-10; }
 .section-block { @apply py-24 md:py-32; }
+
 .glass-card {
-  @apply rounded-2xl border bg-white/80 backdrop-blur-sm;
-  border-color: rgba(174, 132, 72, 0.35);
-  box-shadow: 0 8px 30px rgba(89, 58, 17, 0.08);
+  @apply rounded-3xl border bg-white/70 backdrop-blur-xl;
+  border-color: rgba(184, 150, 98, 0.28);
+  box-shadow: 0 10px 40px -10px rgba(89, 58, 17, 0.15);
+}
+.dark .glass-card {
+  @apply bg-white/[0.04];
+  border-color: rgba(184, 150, 98, 0.18);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
-*::-webkit-scrollbar { width: 10px; }
-*::-webkit-scrollbar-thumb { background: linear-gradient(#b89662,#d7bc8f); border-radius: 999px; }
-::selection { background: rgba(184,150,98,.35); color: #2f2416; }
+.gold-text {
+  background: linear-gradient(90deg, #b89662 0%, #d7bc8f 50%, #b89662 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: shine 4s linear infinite;
+}
+
+.btn-primary {
+  @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 font-medium text-white transition-all duration-300;
+  background: linear-gradient(135deg, #2f2416 0%, #3b3125 100%);
+  box-shadow: 0 10px 30px -10px rgba(47,36,22,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.btn-primary::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, #b89662, #c77f4f);
+  opacity: 0; transition: opacity .35s ease;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary > * { position: relative; z-index: 1; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 38px -10px rgba(184,150,98,0.55); }
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 font-medium transition-all duration-300;
+  border-color: rgba(184,150,98,0.5);
+  color: #2f2416;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(10px);
+}
+.btn-ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,0.85); border-color: rgba(184,150,98,0.85); }
+.dark .btn-ghost { color: #f8f2e8; background: rgba(255,255,255,0.04); }
+.dark .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(#b89662, #d7bc8f);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::selection { background: rgba(184,150,98,0.35); color: #2f2416; }
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #8b6f3e, #b89662 45%, #d7bc8f);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,150,98,0.45), transparent);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

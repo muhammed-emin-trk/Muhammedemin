@@ -1,22 +1,45 @@
 "use client";
 
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { Navbar } from "./navbar";
+import { Footer } from "./footer";
 
-export function ScrollProgress() {
+function ScrollProgress() {
   const { scrollYProgress } = useScroll();
-  return <motion.div style={{ scaleX: scrollYProgress }} className="fixed left-0 top-0 z-[80] h-1 w-full origin-left bg-gradient-to-r from-brand-electric via-brand-mint to-brand-violet" />;
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX }}
+      className="fixed left-0 top-0 z-[80] h-[2px] w-full origin-left bg-gradient-to-r from-brand-bronze via-brand-gold to-brand-copper"
+    />
+  );
 }
 
-export function NoiseOverlay() {
-  return <div className="noise-overlay pointer-events-none fixed inset-0 z-[1] opacity-[0.03]" />;
+function NoiseOverlay() {
+  return <div aria-hidden className="noise-overlay pointer-events-none fixed inset-0 z-[1] opacity-[0.035] mix-blend-multiply" />;
+}
+
+function AmbientBlobs() {
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[0] overflow-hidden">
+      <div className="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full bg-brand-gold/30 blur-3xl animate-blob" />
+      <div className="absolute top-1/3 -right-40 h-[520px] w-[520px] rounded-full bg-brand-copper/25 blur-3xl animate-blob [animation-delay:-6s]" />
+      <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-brand-violet/15 blur-3xl animate-blob [animation-delay:-12s]" />
+    </div>
+  );
 }
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <ScrollProgress />
+    <div className="relative">
+      <AmbientBlobs />
       <NoiseOverlay />
-      {children}
-    </>
+      <ScrollProgress />
+      <div className="relative z-[2]">
+        <Navbar />
+        {children}
+        <Footer />
+      </div>
+    </div>
   );
 }
