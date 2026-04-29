@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Magnetic } from "@/components/shared/magnetic";
 
-const words = ["Sağlığa şefkat,", "kodlara hassasiyet."];
+const words = ["Merhaba, ben Muhammed Emin Türkoğlu.", "Hemşirelik · Gönüllülük · Fotoğrafçılık"];
 
 export function Hero() {
   return (
@@ -26,7 +26,7 @@ export function Hero() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-mint" />
             </span>
             <MapPin size={12} />
-            Bursa, Türkiye — Yeni projelere açık
+            Osmangazi, Bursa — Yeni fırsatlara açık
           </span>
         </motion.div>
 
@@ -51,7 +51,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.5 }}
           className="mx-auto mt-8 max-w-2xl text-center text-lg text-brand-mist md:text-xl dark:text-brand-cream/80"
         >
-          Muhammed Emin Türkoğlu — Bursa Şehir Hastanesi&apos;nde hemşire, aynı zamanda Next.js ve dijital strateji ile markaları geleceğe taşıyan bir geliştirici.
+          Muhammed Emin Türkoğlu — insan odaklı çalışmayı benimseyen, hemşirelik eğitimi alan, gönüllü sosyal sorumluluk ve fotoğrafçılık alanlarında aktif bir profesyonel.
         </motion.p>
 
         <motion.div

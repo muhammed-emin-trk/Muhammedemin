@@ -35,18 +35,18 @@ export function Footer() {
               </span>
               <div>
                 <p className="font-display text-2xl text-brand-ink dark:text-brand-cream">Muhammed Emin Türkoğlu</p>
-                <p className="text-sm text-brand-mist">Hemşire · Geliştirici · Stratejist</p>
+                <p className="text-sm text-brand-mist">Hemşire · Gönüllü · Fotoğrafçı</p>
               </div>
             </div>
             <p className="mt-6 max-w-md text-brand-mist dark:text-brand-cream/70">
-              Sağlığa şefkat, kodlara hassasiyet. Bursa&apos;dan tüm Türkiye&apos;ye, insan odaklı dijital deneyimler ve premium kişisel marka projeleri üretiyorum.
+              İnsan odaklı yaklaşım, gönüllülük ruhu ve sahadan gelen tecrübeyle; sağlık, sosyal sorumluluk ve iletişim alanlarında değer üretmeye odaklanıyorum.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {[
                 { icon: Github, href: "https://github.com" },
                 { icon: Linkedin, href: "https://linkedin.com" },
                 { icon: Instagram, href: "https://instagram.com" },
-                { icon: Mail, href: "mailto:hello@meturkoglu.com" },
+                { icon: Mail, href: "mailto:muhammedeminturk.16@gmail.com" },
               ].map(({ icon: Icon, href }) => (
                 <a
                   key={href}
@@ -79,9 +79,9 @@ export function Footer() {
           <div className="md:col-span-3">
             <p className="font-medium text-brand-ink dark:text-brand-cream">İletişim</p>
             <ul className="mt-4 grid gap-3 text-sm text-brand-mist dark:text-brand-cream/70">
-              <li className="flex items-center gap-2"><Mail size={14} /> hello@meturkoglu.com</li>
-              <li className="flex items-center gap-2"><Phone size={14} /> +90 555 000 00 00</li>
-              <li className="flex items-center gap-2"><MapPin size={14} /> Bursa, Türkiye</li>
+              <li className="flex items-center gap-2"><Mail size={14} /> muhammedeminturk.16@gmail.com</li>
+              <li className="flex items-center gap-2"><Phone size={14} /> 0546 285 18 26</li>
+              <li className="flex items-center gap-2"><MapPin size={14} /> Osmangazi, Bursa</li>
             </ul>
           </div>
         </div>
