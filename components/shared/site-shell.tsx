@@ -3,6 +3,7 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import { CursorGlow } from "./cursor-glow";
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -32,6 +33,7 @@ function AmbientBlobs() {
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
+      <CursorGlow />
       <AmbientBlobs />
       <NoiseOverlay />
       <ScrollProgress />
