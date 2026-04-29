@@ -12,8 +12,8 @@ const timeline = [
   },
   {
     year: "2021 — Bugün",
-    title: "Bursa Şehir Hastanesi · Hemşire",
-    desc: "Türkiye&apos;nin en büyük şehir hastanelerinden birinde aktif hemşirelik görevimi sürdürüyorum. Hasta odaklı, ekip çalışmasına yatkın bir profesyonel olarak gelişiyorum.",
+    title: "Bursa Şehir Hastanesi · Endoskopi Hemşiresi",
+    desc: "Türkiye&apos;nin en büyük şehir hastanelerinden birinde Endoskopi biriminde aktif hemşirelik görevimi sürdürüyorum. Hasta odaklı, ekip çalışmasına yatkın bir profesyonel olarak gelişiyorum.",
     icon: Stethoscope,
   },
   {
@@ -52,7 +52,7 @@ export default function Page() {
               <br /> disiplinle yazan bir geliştirici.
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-brand-mist dark:text-brand-cream/80">
-              Ben Muhammed Emin Türkoğlu. Bursa&apos;da doğdum, Uludağ Üniversitesi&apos;nde hemşirelik okudum ve bugün Bursa Şehir Hastanesi&apos;nde hemşire olarak görev yapıyorum.
+              Ben Muhammed Emin Türkoğlu. Bursa&apos;da doğdum, Uludağ Üniversitesi&apos;nde hemşirelik okudum ve bugün Bursa Şehir Hastanesi Endoskopi biriminde aktif hemşire olarak görev yapıyorum.
               Hayatımın diğer yarısında ise yazılım, tasarım ve dijital pazarlama ile uğraşıyor; insan odaklı dijital deneyimler kuruyorum.
             </p>
           </Reveal>

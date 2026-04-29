@@ -47,7 +47,7 @@ export function About() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-6 text-lg leading-relaxed text-brand-mist dark:text-brand-cream/80">
-              Uludağ Üniversitesi&apos;nde hemşirelik eğitimi aldım. Bursa merkezli çalışmalarımda, insan odaklı yaklaşımı sağlık, gönüllülük ve sosyal sorumluluk alanlarında aktif olarak sürdürüyorum.
+              Uludağ Üniversitesi&apos;nde hemşirelik eğitimi aldım. Şu anda Endoskopi biriminde aktif hemşire olarak görev yapıyor; Bursa merkezli çalışmalarımda insan odaklı yaklaşımı sağlık, gönüllülük ve sosyal sorumluluk alanlarında sürdürüyorum.
             </p>
           </Reveal>
           <Reveal delay={0.18}>
