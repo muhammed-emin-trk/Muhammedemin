@@ -21,7 +21,7 @@ function NoiseOverlay() {
 
 function AmbientBlobs() {
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-[0] overflow-hidden">
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[0] hidden overflow-hidden md:block">
       <div className="absolute -top-32 -left-32 h-[480px] w-[480px] rounded-full bg-brand-gold/30 blur-3xl animate-blob" />
       <div className="absolute top-1/3 -right-40 h-[520px] w-[520px] rounded-full bg-brand-copper/25 blur-3xl animate-blob [animation-delay:-6s]" />
       <div className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full bg-brand-violet/15 blur-3xl animate-blob [animation-delay:-12s]" />

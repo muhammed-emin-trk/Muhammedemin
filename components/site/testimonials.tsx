@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Star, Quote } from "lucide-react";
 import { motion } from "framer-motion";
@@ -7,6 +8,15 @@ import { Reveal } from "@/components/shared/reveal";
 import { testimonials } from "@/lib/content";
 
 export function Testimonials() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    const onChange = () => setIsMobile(media.matches);
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
   const items = [...testimonials, ...testimonials];
   return (
     <section className="section-block">
@@ -24,8 +34,8 @@ export function Testimonials() {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--bg-via)] to-transparent" />
         <motion.div
           className="flex w-max gap-6 px-6"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 38, repeat: Infinity, ease: "linear" }}
+          animate={isMobile ? undefined : { x: ["0%", "-50%"] }}
+          transition={isMobile ? undefined : { duration: 38, repeat: Infinity, ease: "linear" }}
         >
           {items.map((t, i) => (
             <article
