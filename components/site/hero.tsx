@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Magnetic } from "@/components/shared/magnetic";
 
-const words = ["Merhaba, ben Muhammed Emin Türkoğlu.", "Hemşirelik · Gönüllülük · Fotoğrafçılık"];
+const words = ["Sağlık odaklı dijital deneyimler tasarlıyorum.", "Hemşirelik · Gönüllülük · Fotoğrafçılık"];
 
 export function Hero() {
   return (
@@ -51,7 +51,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.5 }}
           className="mx-auto mt-8 max-w-2xl text-center text-lg text-brand-mist md:text-xl dark:text-brand-cream/80"
         >
-          Muhammed Emin Türkoğlu — insan odaklı çalışmayı benimseyen, hemşirelik eğitimi alan, gönüllü sosyal sorumluluk ve fotoğrafçılık alanlarında aktif bir profesyonel.
+          İnsan odaklı çalışmayı benimseyen; hemşirelik altyapısını dijital ürün yaklaşımıyla birleştiren, sosyal sorumluluk ve fotoğrafçılıkta aktif bir profesyonel.
         </motion.p>
 
         <motion.div
