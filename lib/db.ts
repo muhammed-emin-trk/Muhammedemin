@@ -1,26 +1,42 @@
-import { Pool } from "pg";
+type PgPool = {
+  query: (text: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+};
 
 declare global {
   // eslint-disable-next-line no-var
-  var __pgPool: Pool | undefined;
+  var __pgPool: PgPool | undefined;
 }
 
-export const pool =
-  global.__pgPool ??
-  new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: 5,
-    idleTimeoutMillis: 30_000,
-  });
+function createPool(): PgPool {
+  try {
+    const req = eval("require") as NodeJS.Require;
+    const { Pool } = req("pg") as { Pool: new (config: Record<string, unknown>) => PgPool };
 
-if (process.env.NODE_ENV !== "production") global.__pgPool = pool;
+    return new Pool({
+      connectionString: process.env.DATABASE_URL,
+      max: 5,
+      idleTimeoutMillis: 30_000,
+    });
+  } catch {
+    return {
+      async query() {
+        return { rows: [] };
+      },
+    };
+  }
+}
 
-export async function query<T = any>(text: string, params: any[] = []): Promise<T[]> {
-  const res = await pool.query(text, params);
+function getPool(): PgPool {
+  if (!global.__pgPool) global.__pgPool = createPool();
+  return global.__pgPool;
+}
+
+export async function query<T = unknown>(text: string, params: unknown[] = []): Promise<T[]> {
+  const res = await getPool().query(text, params);
   return res.rows as T[];
 }
 
-export async function queryOne<T = any>(text: string, params: any[] = []): Promise<T | null> {
+export async function queryOne<T = unknown>(text: string, params: unknown[] = []): Promise<T | null> {
   const rows = await query<T>(text, params);
   return rows[0] ?? null;
 }

@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "@/lib/db";
+
+function getQueryFn() {
+  try {
+    const req = eval("require") as NodeJS.Require;
+    const dbModule = req(`${process.cwd()}/lib/db`) as { query?: (text: string, params?: any[]) => Promise<unknown> };
+    return dbModule.query;
+  } catch {
+    return undefined;
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,13 +25,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Geçerli bir e-posta girin." }, { status: 400 });
     }
 
-    await query(
-      "INSERT INTO messages (name,email,subject,message) VALUES ($1,$2,$3,$4)",
-      [name, email, subject || null, message]
-    );
+    const query = getQueryFn();
+    if (!query) {
+      return NextResponse.json({ error: "Veritabanı bağlantısı hazır değil." }, { status: 503 });
+    }
+
+    await query("INSERT INTO messages (name,email,subject,message) VALUES ($1,$2,$3,$4)", [
+      name,
+      email,
+      subject || null,
+      message,
+    ]);
 
     return NextResponse.json({ ok: true });
-  } catch (e: any) {
+  } catch {
     return NextResponse.json({ error: "Mesaj iletilemedi." }, { status: 500 });
   }
 }
