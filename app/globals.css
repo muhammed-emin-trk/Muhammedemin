@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+ :root {
   color-scheme: light;
+  --font-sans: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
   --bg-from: #f8f2e8;
   --bg-via: #f3eadc;
   --bg-to: #efe3d1;
