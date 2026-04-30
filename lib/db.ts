@@ -32,8 +32,19 @@ function getPool(): PgPool {
 }
 
 export async function query<T = unknown>(text: string, params: unknown[] = []): Promise<T[]> {
-  const res = await getPool().query(text, params);
-  return res.rows as T[];
+  try {
+    const res = await getPool().query(text, params);
+    return res.rows as T[];
+  } catch (error) {
+    const code = typeof error === "object" && error && "code" in error ? String((error as { code?: string }).code) : "";
+
+    if (code === "ECONNREFUSED" || code === "ENOTFOUND" || code === "ETIMEDOUT") {
+      console.warn("Database unavailable; returning empty result set.");
+      return [];
+    }
+
+    throw error;
+  }
 }
 
 export async function queryOne<T = unknown>(text: string, params: unknown[] = []): Promise<T | null> {
