@@ -5,7 +5,7 @@ import { Plus, Trash2, Loader2, Upload, ImagePlus } from "lucide-react";
 
 type Photo = { id: number; src: string; alt: string; sort_order: number };
 
-const toCompressed = (file: File, maxSide = 1280, quality = 0.75): Promise<string> =>
+const toCompressed = (file: File, maxSide = 1280, quality = 0.78, maxBytes = 450_000): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Dosya okunamadı"));
@@ -13,15 +13,30 @@ const toCompressed = (file: File, maxSide = 1280, quality = 0.75): Promise<strin
       const img = new Image();
       img.onerror = () => reject(new Error("Görsel açılamadı"));
       img.onload = () => {
-        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
-        const w = Math.max(1, Math.round(img.width * scale));
-        const h = Math.max(1, Math.round(img.height * scale));
         const c = document.createElement("canvas");
-        c.width = w; c.height = h;
         const ctx = c.getContext("2d");
         if (!ctx) return reject(new Error("Canvas hata"));
-        ctx.drawImage(img, 0, 0, w, h);
-        resolve(c.toDataURL("image/webp", quality));
+
+        const baseScale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        let dimensionScale = 1;
+        let output = "";
+
+        for (let attempt = 0; attempt < 6; attempt += 1) {
+          const w = Math.max(1, Math.round(img.width * baseScale * dimensionScale));
+          const h = Math.max(1, Math.round(img.height * baseScale * dimensionScale));
+          c.width = w;
+          c.height = h;
+          ctx.clearRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const adjustedQuality = Math.max(0.5, quality - attempt * 0.06);
+          output = c.toDataURL("image/jpeg", adjustedQuality);
+          const estimatedBytes = Math.ceil((output.length * 3) / 4);
+          if (estimatedBytes <= maxBytes) break;
+          dimensionScale *= 0.85;
+        }
+
+        resolve(output);
       };
       img.src = String(reader.result);
     };
