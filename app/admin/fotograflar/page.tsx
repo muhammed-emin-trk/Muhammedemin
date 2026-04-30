@@ -21,6 +21,7 @@ const toCompressed = (file: File, maxSide = 1280, quality = 0.78, maxBytes = 450
         let dimensionScale = 1;
         let output = "";
 
+        let estimatedBytes = 0;
         for (let attempt = 0; attempt < 6; attempt += 1) {
           const w = Math.max(1, Math.round(img.width * baseScale * dimensionScale));
           const h = Math.max(1, Math.round(img.height * baseScale * dimensionScale));
@@ -31,9 +32,13 @@ const toCompressed = (file: File, maxSide = 1280, quality = 0.78, maxBytes = 450
 
           const adjustedQuality = Math.max(0.5, quality - attempt * 0.06);
           output = c.toDataURL("image/jpeg", adjustedQuality);
-          const estimatedBytes = Math.ceil((output.length * 3) / 4);
+          estimatedBytes = Math.ceil((output.length * 3) / 4);
           if (estimatedBytes <= maxBytes) break;
           dimensionScale *= 0.85;
+        }
+
+        if (estimatedBytes > maxBytes) {
+          return reject(new Error("Görsel sıkıştırılamadı, daha küçük bir görsel seçin"));
         }
 
         resolve(output);
