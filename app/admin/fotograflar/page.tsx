@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Plus, Trash2, Loader2, Upload } from "lucide-react";
+import { Plus, Trash2, Loader2, Upload, ImagePlus } from "lucide-react";
 
 type Photo = { id: number; src: string; alt: string; sort_order: number };
 
-const toCompressed = (file: File, maxSide = 1600, quality = 0.82): Promise<string> =>
+const toCompressed = (file: File, maxSide = 1280, quality = 0.75): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Dosya okunamadı"));
@@ -21,7 +21,7 @@ const toCompressed = (file: File, maxSide = 1600, quality = 0.82): Promise<strin
         const ctx = c.getContext("2d");
         if (!ctx) return reject(new Error("Canvas hata"));
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(c.toDataURL("image/jpeg", quality));
+        resolve(c.toDataURL("image/webp", quality));
       };
       img.src = String(reader.result);
     };
@@ -31,6 +31,8 @@ const toCompressed = (file: File, maxSide = 1600, quality = 0.82): Promise<strin
 export default function PhotosAdmin() {
   const [items, setItems] = useState<Photo[]>([]);
   const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string>("");
+  const [selected, setSelected] = useState<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
@@ -41,22 +43,33 @@ export default function PhotosAdmin() {
 
   async function upload(files?: FileList | null) {
     if (!files?.length) return;
+    setStatus("");
+    const picked = Array.from(files);
+    setSelected(picked.map((f) => f.name));
     setBusy(true);
     try {
-      for (const f of Array.from(files)) {
+      for (const [i, f] of picked.entries()) {
         const src = await toCompressed(f);
-        await fetch("/api/admin/photos", {
+        const res = await fetch("/api/admin/photos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ src, alt: f.name, sort_order: items.length }),
+          body: JSON.stringify({ src, alt: f.name, sort_order: items.length + i }),
         });
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          throw new Error(data?.error || "Yükleme başarısız");
+        }
       }
       await load();
-    } catch (e: any) {
-      alert(e.message || "Yükleme başarısız");
+      setStatus(`${picked.length} fotoğraf yüklendi.`);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Yükleme başarısız";
+      setStatus(message);
+      alert(message);
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = "";
+      setSelected([]);
     }
   }
 
@@ -104,6 +117,15 @@ export default function PhotosAdmin() {
           </button>
         </div>
       </header>
+
+      {(selected.length > 0 || status) && (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-200">
+          {selected.length > 0 && busy && (
+            <p className="inline-flex items-center gap-2"><ImagePlus size={16} className="text-sky-500" /> Seçilen: {selected.join(", ")}</p>
+          )}
+          {status && <p>{status}</p>}
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
