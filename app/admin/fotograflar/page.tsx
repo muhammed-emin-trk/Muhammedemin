@@ -5,7 +5,7 @@ import { Plus, Trash2, Loader2, Upload, ImagePlus } from "lucide-react";
 
 type Photo = { id: number; src: string; alt: string; sort_order: number };
 
-const toCompressed = (file: File, maxSide = 1280, quality = 0.75): Promise<string> =>
+const toCompressed = (file: File, maxSide = 960, quality = 0.6): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Dosya okunamadı"));
@@ -21,7 +21,11 @@ const toCompressed = (file: File, maxSide = 1280, quality = 0.75): Promise<strin
         const ctx = c.getContext("2d");
         if (!ctx) return reject(new Error("Canvas hata"));
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(c.toDataURL("image/webp", quality));
+        const out = c.toDataURL("image/webp", quality);
+        if (out.length > 450_000) {
+          return reject(new Error("Görsel boyutu çok büyük. Daha küçük bir fotoğraf seçin."));
+        }
+        resolve(out);
       };
       img.src = String(reader.result);
     };
@@ -56,8 +60,15 @@ export default function PhotosAdmin() {
           body: JSON.stringify({ src, alt: f.name, sort_order: items.length + i }),
         });
         if (!res.ok) {
-          const data = await res.json().catch(() => null);
-          throw new Error(data?.error || "Yükleme başarısız");
+          const raw = await res.text().catch(() => "");
+          let message = "Yükleme başarısız";
+          try {
+            const data = raw ? JSON.parse(raw) : null;
+            message = data?.error || message;
+          } catch {
+            if (raw) message = raw;
+          }
+          throw new Error(message);
         }
       }
       await load();

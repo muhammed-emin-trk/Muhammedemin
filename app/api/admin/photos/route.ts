@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
   if (guard()) return guard()!;
   const b = await req.json();
   if (!b.src) return NextResponse.json({ error: "Görsel gerekli" }, { status: 400 });
+  if (typeof b.src !== "string") return NextResponse.json({ error: "Geçersiz görsel" }, { status: 400 });
+  if (b.src.length > 450_000) return NextResponse.json({ error: "Görsel boyutu çok büyük" }, { status: 413 });
   await query("INSERT INTO personal_photos (src,alt,sort_order) VALUES ($1,$2,$3)", [b.src, b.alt || "", b.sort_order || 0]);
   revalidatePath("/hakkimda");
   revalidatePath("/");
