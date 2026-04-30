@@ -31,7 +31,7 @@ Tablolar: `projects`, `posts`, `pages`, `messages`, `photos`, `testimonials`, `f
 
 ## Yönetim Paneli
 - URL: `/admin/login`
-- Şifre: `emin2026` (env: `ADMIN_PASSWORD`)
+- Şifre: `Emin.016` (env: `ADMIN_PASSWORD`)
 - Cookie: `met_admin` (HMAC, 30 gün)
 - Renk paleti: amber/orange/rose/violet/emerald/sky gradientler.
 - Tüm içerik (proje, blog, sayfa, fotoğraf, referans, SSS, iletişim ayarları) panelden eklenip silinebilir; gelen mesajlara cevap yazılabilir, okundu/yıldızlı işaretlenir.
