@@ -19,8 +19,11 @@ function createPool(): PgPool {
     });
   } catch {
     return {
-      async query() {
-        return { rows: [] };
+      async query(text: string) {
+        const isReadQuery = /^\s*select\b/i.test(text);
+        if (isReadQuery) return { rows: [] };
+
+        throw new Error("PostgreSQL sürücüsü yüklenemedi. `pg` bağımlılığı ve Node.js runtime ayarlarını kontrol edin.");
       },
     };
   }
