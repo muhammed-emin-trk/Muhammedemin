@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, Github, Linkedin, Instagram, MessageCircle } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactForm } from "@/components/site/contact-form";
+import { MiniGameDiscount } from "@/components/site/mini-game-discount";
 import { getSettings } from "@/lib/queries";
 
 export const metadata = { title: "İletişim" };
@@ -38,6 +39,9 @@ export default async function Page() {
 
       <section className="section-container section-block">
         <div className="grid gap-10 lg:grid-cols-12">
+          <Reveal className="lg:col-span-12">
+            <MiniGameDiscount />
+          </Reveal>
           <Reveal className="lg:col-span-7">
             <div className="glass-card p-6 md:p-10">
               <ContactForm />
