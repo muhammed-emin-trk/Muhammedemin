@@ -1,4 +1,7 @@
 import { query, queryOne } from "./db";
+import { ensureTables } from "./migrate";
+
+const _init = ensureTables();
 
 export type Project = {
   id: number;
