@@ -44,8 +44,13 @@ export async function query<T = unknown>(text: string, params: unknown[] = []): 
       code === "ETIMEDOUT" ||
       code === "42P01"
     ) {
-      console.warn(`Database query skipped (${code || "unknown"}); returning empty result set.`);
-      return [];
+      const isReadQuery = /^\s*select\b/i.test(text);
+      if (isReadQuery) {
+        console.warn(`Database read skipped (${code || "unknown"}); returning empty result set.`);
+        return [];
+      }
+
+      throw new Error(`Database is unavailable (${code || "unknown"}). Check DATABASE_URL and database connectivity.`);
     }
 
     throw error;
