@@ -38,8 +38,13 @@ export async function query<T = unknown>(text: string, params: unknown[] = []): 
   } catch (error) {
     const code = typeof error === "object" && error && "code" in error ? String((error as { code?: string }).code) : "";
 
-    if (code === "ECONNREFUSED" || code === "ENOTFOUND" || code === "ETIMEDOUT") {
-      console.warn("Database unavailable; returning empty result set.");
+    if (
+      code === "ECONNREFUSED" ||
+      code === "ENOTFOUND" ||
+      code === "ETIMEDOUT" ||
+      code === "42P01"
+    ) {
+      console.warn(`Database query skipped (${code || "unknown"}); returning empty result set.`);
       return [];
     }
 
