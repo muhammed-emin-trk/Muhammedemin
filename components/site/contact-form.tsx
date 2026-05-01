@@ -1,13 +1,19 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Send, Check, Loader2, AlertCircle, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function ContactForm() {
   const [state, setState] = useState<"idle" | "loading" | "ok" | "err">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [discountCode, setDiscountCode] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const savedCode = window.localStorage.getItem("discount_code");
+    if (savedCode) setDiscountCode(savedCode);
+  }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,12 +25,16 @@ export function ContactForm() {
       email: String(fd.get("email") || ""),
       subject: String(fd.get("subject") || ""),
       message: String(fd.get("message") || ""),
+      discountCode: String(fd.get("discountCode") || "").trim().toUpperCase(),
     };
+    const finalSubject = payload.discountCode
+      ? `${payload.subject || "Teklif Talebi"} [İndirim Kodu: ${payload.discountCode}]`
+      : payload.subject;
     try {
       const r = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, subject: finalSubject }),
       });
       if (!r.ok) {
         const j = await r.json().catch(() => ({}));
@@ -46,6 +56,13 @@ export function ContactForm() {
         <PremiumField label="E-posta" name="email" type="email" placeholder="ornek@mail.com" required />
       </div>
       <PremiumField label="Konu" name="subject" placeholder="Projenizden kısaca bahsedin" />
+      <PremiumField
+        label="İndirim Kodu (varsa)"
+        name="discountCode"
+        placeholder="OYUN25"
+        value={discountCode}
+        onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+      />
 
       <label className="group grid gap-2 text-sm">
         <span className="font-semibold text-brand-ink dark:text-brand-cream">Mesajınız</span>
@@ -122,12 +139,16 @@ function PremiumField({
   type = "text",
   placeholder,
   required,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
   required?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <label className="group grid gap-2 text-sm">
@@ -137,6 +158,8 @@ function PremiumField({
         type={type}
         required={required}
         placeholder={placeholder}
+        value={value}
+        onChange={onChange}
         className="rounded-2xl border border-brand-gold/35 bg-white/80 px-5 py-3.5 text-brand-ink outline-none transition-all duration-300 placeholder:text-brand-mist/60 focus:border-brand-bronze focus:bg-white focus:shadow-[0_0_0_3px_rgba(184,150,98,0.15)] dark:bg-white/[0.06] dark:text-brand-cream dark:focus:bg-white/10"
       />
     </label>
