@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, Trophy, Heart, Sparkles, Zap, ShieldCheck } from "lucide-react";
+import { Award, Trophy, Code2, Sparkles, Zap, ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 
 const achievements = [
@@ -14,9 +14,9 @@ const achievements = [
     num: "96+",
   },
   {
-    icon: Heart,
-    title: "1500+ Hasta",
-    desc: "Endoskopi biriminde birebir bakım sağlanan hasta sayısı.",
+    icon: Code2,
+    title: "40+ Yazılım Projesi",
+    desc: "Kurumsal web sitesi, landing page ve dashboard teslimleri.",
     color: "from-rose-400 via-pink-500 to-red-500",
     glow: "rgba(244,63,94,0.35)",
     num: "1.5K+",
