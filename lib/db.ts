@@ -5,12 +5,13 @@ type PgPool = {
 declare global {
   // eslint-disable-next-line no-var
   var __pgPool: PgPool | undefined;
+  // eslint-disable-next-line no-var
+  var __pgPoolPromise: Promise<PgPool> | undefined;
 }
 
-function createPool(): PgPool {
+async function createPool(): Promise<PgPool> {
   try {
-    const req = eval("require") as NodeJS.Require;
-    const { Pool } = req("pg") as { Pool: new (config: Record<string, unknown>) => PgPool };
+    const { Pool } = (await import("pg")) as { Pool: new (config: Record<string, unknown>) => PgPool };
 
     return new Pool({
       connectionString: process.env.DATABASE_URL,
@@ -29,14 +30,21 @@ function createPool(): PgPool {
   }
 }
 
-function getPool(): PgPool {
-  if (!global.__pgPool) global.__pgPool = createPool();
-  return global.__pgPool;
+async function getPool(): Promise<PgPool> {
+  if (global.__pgPool) return global.__pgPool;
+  if (!global.__pgPoolPromise) {
+    global.__pgPoolPromise = createPool().then((pool) => {
+      global.__pgPool = pool;
+      return pool;
+    });
+  }
+  return global.__pgPoolPromise;
 }
 
 export async function query<T = unknown>(text: string, params: unknown[] = []): Promise<T[]> {
   try {
-    const res = await getPool().query(text, params);
+    const pool = await getPool();
+    const res = await pool.query(text, params);
     return res.rows as T[];
   } catch (error) {
     const code = typeof error === "object" && error && "code" in error ? String((error as { code?: string }).code) : "";
