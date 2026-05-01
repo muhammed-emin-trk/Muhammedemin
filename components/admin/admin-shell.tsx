@@ -5,11 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   LayoutDashboard, FolderKanban, BookOpen, FileText, Mail,
-  Image as ImageIcon, MessageSquareQuote, HelpCircle, Settings, LogOut, Menu, X, Home
+  Image as ImageIcon, MessageSquareQuote, HelpCircle, Settings, LogOut, Menu, X, Home,
+  BarChart2
 } from "lucide-react";
 
 const nav = [
   { href: "/admin", label: "Panel", icon: LayoutDashboard },
+  { href: "/admin/analitik", label: "Analitik", icon: BarChart2 },
   { href: "/admin/mesajlar", label: "Mesajlar", icon: Mail, accent: true },
   { href: "/admin/projeler", label: "Projeler", icon: FolderKanban },
   { href: "/admin/blog", label: "Blog", icon: BookOpen },

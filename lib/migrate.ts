@@ -112,6 +112,17 @@ export async function ensureTables() {
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
+    await query(`
+      CREATE TABLE IF NOT EXISTS page_views (
+        id SERIAL PRIMARY KEY,
+        path TEXT NOT NULL,
+        referrer TEXT DEFAULT '',
+        ua TEXT DEFAULT '',
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+    await query(`CREATE INDEX IF NOT EXISTS page_views_path_idx ON page_views(path)`);
+    await query(`CREATE INDEX IF NOT EXISTS page_views_created_at_idx ON page_views(created_at)`);
   } catch (e) {
     console.error("Migration error:", e);
   }
