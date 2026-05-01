@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
   if (!slug) return NextResponse.json({ error: "Slug gerekli" }, { status: 400 });
   const body = JSON.stringify(b.body || []);
   await query(
-    `INSERT INTO pages (slug,title,subtitle,cover,body,show_in_nav,published,sort_order)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-    [slug, b.title || "", b.subtitle || "", b.cover || "", body, !!b.show_in_nav, b.published !== false, b.sort_order || 0]
+    `INSERT INTO pages (slug,title,subtitle,cover,category,tags,body,show_in_nav,published,sort_order)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+    [slug, b.title || "", b.subtitle || "", b.cover || "", b.category || "", JSON.stringify(b.tags || []), body, !!b.show_in_nav, b.published !== false, b.sort_order || 0]
   );
   revalidatePath("/", "layout");
   return NextResponse.json({ ok: true });

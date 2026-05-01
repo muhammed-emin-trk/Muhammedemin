@@ -22,6 +22,7 @@ const empty = (): B => ({
   date: new Date().toISOString().slice(0, 10),
   reading_minutes: 5, body: [""], tags: [], published: true, sort_order: 0,
 });
+const BLOG_TAGS = ["Yazılım", "Frontend", "Backend", "Tasarım", "Kariyer", "Verimlilik", "İpucu"];
 
 function normTags(t: any): string[] {
   if (Array.isArray(t)) return t;
@@ -130,9 +131,9 @@ export default function BlogAdmin() {
               <Field label="Tarih" type="date" v={editing.date} on={(v: string) => setEditing({ ...editing, date: v })} />
               <Field label="Okuma süresi (dk)" type="number" v={String(editing.reading_minutes)} on={(v: string) => setEditing({ ...editing, reading_minutes: Number(v) || 5 })} />
             </div>
-            <Field className="mt-4" label="Kapak Görseli URL" v={editing.cover} on={(v: string) => setEditing({ ...editing, cover: v })} />
+            <ImagePicker className="mt-4" label="Kapak Görseli" value={editing.cover} onChange={(v: string) => setEditing({ ...editing, cover: v })} />
             <Area className="mt-4" label="Özet" v={editing.excerpt} on={(v: string) => setEditing({ ...editing, excerpt: v })} rows={2} />
-            <Field className="mt-4" label="Etiketler (virgülle)" v={Array.isArray(editing.tags) ? editing.tags.join(", ") : String(editing.tags)} on={(v: string) => setEditing({ ...editing, tags: v.split(",").map((s) => s.trim()).filter(Boolean) })} />
+            <TagPicker className="mt-4" label="Etiketler" selected={Array.isArray(editing.tags) ? editing.tags : normTags(editing.tags)} options={BLOG_TAGS} onChange={(tags: string[]) => setEditing({ ...editing, tags })} />
 
             <div className="mt-4">
               <label className="text-xs uppercase tracking-[0.2em] text-slate-500">Yazı Paragrafları (HTML destekli)</label>
@@ -180,4 +181,16 @@ function Area({ label, v, on, rows = 3, className = "" }: any) {
       <textarea value={v} rows={rows} onChange={(e) => on(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-800" />
     </label>
   );
+}
+function TagPicker({ label, selected, options, onChange, className = "" }: any) {
+  return <div className={`grid gap-1.5 text-sm ${className}`}><span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span><div className="flex flex-wrap gap-2">{options.map((tag: string) => <button type="button" key={tag} onClick={() => onChange(selected.includes(tag) ? selected.filter((t: string) => t !== tag) : [...selected, tag])} className={`rounded-full border px-3 py-1 text-xs ${selected.includes(tag) ? "border-rose-500 bg-rose-100 text-rose-700" : "border-slate-300 text-slate-600"}`}>{tag}</button>)}</div></div>;
+}
+function ImagePicker({ label, value, onChange, className = "" }: any) {
+  const onFile = (file?: File) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => onChange(String(reader.result || ""));
+    reader.readAsDataURL(file);
+  };
+  return <div className={`grid gap-2 text-sm ${className}`}><span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span><input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0])} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />{value && <img src={value} alt="" className="h-28 w-full rounded-xl object-cover md:w-72" />}</div>;
 }

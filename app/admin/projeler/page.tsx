@@ -22,6 +22,8 @@ const empty = (): P => ({
   slug: "", title: "", category: "", year: new Date().getFullYear(), role: "", cover: "",
   description: "", content: [""], tags: [], featured: false, sort_order: 0,
 });
+const PROJECT_CATEGORIES = ["Web Uygulaması", "Mobil Uygulama", "E-Ticaret", "Kurumsal Site", "Diğer"];
+const PROJECT_TAGS = ["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "Tailwind", "API", "UI/UX"];
 
 function normalizeTags(t: any): string[] {
   if (Array.isArray(t)) return t;
@@ -134,14 +136,14 @@ export default function ProjectsPage() {
             <div className="grid gap-4 md:grid-cols-2">
               <Field label="Başlık" v={editing.title} on={(v) => setEditing({ ...editing, title: v })} />
               <Field label="Slug (url)" v={editing.slug} on={(v) => setEditing({ ...editing, slug: v.toLowerCase().replace(/[^a-z0-9-]/g, "-") })} placeholder="proje-adi" />
-              <Field label="Kategori" v={editing.category} on={(v) => setEditing({ ...editing, category: v })} />
+              <SelectField label="Kategori" value={editing.category} options={PROJECT_CATEGORIES} onChange={(v) => setEditing({ ...editing, category: v })} />
               <Field label="Yıl" type="number" v={String(editing.year)} on={(v) => setEditing({ ...editing, year: v })} />
               <Field label="Rolün" v={editing.role} on={(v) => setEditing({ ...editing, role: v })} />
               <Field label="Sıralama (küçük üstte)" type="number" v={String(editing.sort_order)} on={(v) => setEditing({ ...editing, sort_order: Number(v) || 0 })} />
             </div>
-            <Field className="mt-4" label="Kapak Görseli URL" v={editing.cover} on={(v) => setEditing({ ...editing, cover: v })} placeholder="https://..." />
+            <ImagePicker className="mt-4" label="Kapak Görseli" value={editing.cover} onChange={(v) => setEditing({ ...editing, cover: v })} />
             <Area className="mt-4" label="Kısa Açıklama" v={editing.description} on={(v) => setEditing({ ...editing, description: v })} rows={2} />
-            <Field className="mt-4" label="Etiketler (virgülle)" v={Array.isArray(editing.tags) ? editing.tags.join(", ") : String(editing.tags)} on={(v) => setEditing({ ...editing, tags: v.split(",").map((s) => s.trim()).filter(Boolean) })} />
+            <TagPicker className="mt-4" label="Etiketler" selected={Array.isArray(editing.tags) ? editing.tags : normalizeTags(editing.tags)} options={PROJECT_TAGS} onChange={(tags) => setEditing({ ...editing, tags })} />
 
             <div className="mt-4">
               <label className="text-xs uppercase tracking-[0.2em] text-slate-500">İçerik Paragrafları</label>
@@ -195,4 +197,19 @@ function Area({ label, v, on, rows = 3, className = "" }: any) {
       <textarea value={v} rows={rows} onChange={(e) => on(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-800" />
     </label>
   );
+}
+function SelectField({ label, value, onChange, options }: any) {
+  return <label className="grid gap-1.5 text-sm"><span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span><select value={value} onChange={(e) => onChange(e.target.value)} className="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-800"><option value="">Seçiniz</option>{options.map((o: string) => <option key={o} value={o}>{o}</option>)}</select></label>;
+}
+function TagPicker({ label, selected, options, onChange, className = "" }: any) {
+  return <div className={`grid gap-1.5 text-sm ${className}`}><span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span><div className="flex flex-wrap gap-2">{options.map((tag: string) => <button type="button" key={tag} onClick={() => onChange(selected.includes(tag) ? selected.filter((t: string) => t !== tag) : [...selected, tag])} className={`rounded-full border px-3 py-1 text-xs ${selected.includes(tag) ? "border-amber-500 bg-amber-100 text-amber-700" : "border-slate-300 text-slate-600"}`}>{tag}</button>)}</div></div>;
+}
+function ImagePicker({ label, value, onChange, className = "" }: any) {
+  const onFile = (file?: File) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => onChange(String(reader.result || ""));
+    reader.readAsDataURL(file);
+  };
+  return <div className={`grid gap-2 text-sm ${className}`}><span className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</span><input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0])} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800" />{value && <img src={value} alt="" className="h-28 w-full rounded-xl object-cover md:w-72" />}</div>;
 }
