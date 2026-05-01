@@ -5,15 +5,41 @@ type SyncResult = {
   warning?: string;
 };
 
-const REQUIRED_ENV = ["GITHUB_TOKEN", "GITHUB_REPO", "GITHUB_CONTENT_PATH"] as const;
+const ENV_CANDIDATES = {
+  token: ["GITHUB_TOKEN"],
+  repo: ["GITHUB_REPO"],
+  contentPath: ["GITHUB_CONTENT_PATH", "GITHUB_PATH", "CONTENT_PATH"],
+  branch: ["GITHUB_BRANCH"],
+} as const;
+
+function readEnv(keys: readonly string[]): string | undefined {
+  for (const key of keys) {
+    const value = process.env[key]?.trim();
+    if (value) return value;
+  }
+  return undefined;
+}
+
+function normalizeContentPath(path: string): string {
+  return path.replace(/^\/+/, "");
+}
 
 export async function syncContentToGitHub(trigger: string): Promise<SyncResult> {
-  const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+  const token = readEnv(ENV_CANDIDATES.token);
+  const repo = readEnv(ENV_CANDIDATES.repo);
+  const contentPath = readEnv(ENV_CANDIDATES.contentPath);
+
+  const missing = [
+    !token ? "GITHUB_TOKEN" : null,
+    !repo ? "GITHUB_REPO" : null,
+    !contentPath ? "GITHUB_CONTENT_PATH" : null,
+  ].filter(Boolean);
+
   if (missing.length) {
     return {
       synced: false,
       warning:
-        "GitHub yedekleme kapalı. Ayarlamak için GITHUB_TOKEN, GITHUB_REPO ve GITHUB_CONTENT_PATH ortam değişkenlerini ekleyin.",
+        `GitHub yedekleme kapalı. Eksik değişken(ler): ${missing.join(", ")}.`,
     };
   }
 
@@ -29,10 +55,8 @@ export async function syncContentToGitHub(trigger: string): Promise<SyncResult> 
     trigger,
   };
 
-  const repo = process.env.GITHUB_REPO as string;
-  const path = process.env.GITHUB_CONTENT_PATH as string;
-  const branch = process.env.GITHUB_BRANCH || "main";
-  const token = process.env.GITHUB_TOKEN as string;
+  const path = normalizeContentPath(contentPath as string);
+  const branch = readEnv(ENV_CANDIDATES.branch) || "main";
   const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
 
   const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, {
