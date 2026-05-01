@@ -17,7 +17,8 @@ export async function GET() {
         tags TEXT DEFAULT '',
         featured BOOLEAN DEFAULT false,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
 
@@ -34,7 +35,8 @@ export async function GET() {
         tags TEXT DEFAULT '',
         published BOOLEAN DEFAULT true,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
 
@@ -117,9 +119,14 @@ export async function GET() {
         show_in_nav BOOLEAN DEFAULT false,
         published BOOLEAN DEFAULT true,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
+
+    await query(`ALTER TABLE projects ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
+    await query(`ALTER TABLE posts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
+    await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
 
     return NextResponse.json({ ok: true, message: "Tüm tablolar başarıyla oluşturuldu." });
   } catch (error: any) {
