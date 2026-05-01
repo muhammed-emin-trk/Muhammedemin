@@ -3,6 +3,8 @@ import { isAdmin } from "@/lib/admin-auth";
 import { query } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
+export const runtime = "nodejs";
+
 function guard() {
   if (!isAdmin()) return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   return null;
