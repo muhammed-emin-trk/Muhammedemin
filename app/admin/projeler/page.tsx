@@ -71,6 +71,8 @@ export default function ProjectsPage() {
     const r = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     setBusy(false);
     if (r.ok) {
+      const j = await r.json().catch(() => ({}));
+      if (j?.github?.warning) alert(j.github.warning);
       setEditing(null);
       load();
     } else {
@@ -81,7 +83,9 @@ export default function ProjectsPage() {
 
   async function remove(id: number) {
     if (!confirm("Bu projeyi silmek istediğine emin misin?")) return;
-    await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
+    const r = await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
+    const j = await r.json().catch(() => ({}));
+    if (j?.github?.warning) alert(j.github.warning);
     load();
   }
 

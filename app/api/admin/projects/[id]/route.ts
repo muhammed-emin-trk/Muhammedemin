@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin-auth";
 import { query } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { syncContentToGitHub } from "@/lib/github-sync";
 
 function guard() {
   if (!isAdmin()) return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
@@ -20,7 +21,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   revalidatePath("/projeler");
   revalidatePath(`/projeler/${b.slug}`);
   revalidatePath("/");
-  return NextResponse.json({ ok: true });
+  const github = await syncContentToGitHub("projects");
+  return NextResponse.json({ ok: true, github });
 }
 
 export async function DELETE(_: NextRequest, { params }: { params: { id: string } }) {
@@ -28,5 +30,6 @@ export async function DELETE(_: NextRequest, { params }: { params: { id: string 
   await query("DELETE FROM projects WHERE id=$1", [Number(params.id)]);
   revalidatePath("/projeler");
   revalidatePath("/");
-  return NextResponse.json({ ok: true });
+  const github = await syncContentToGitHub("projects");
+  return NextResponse.json({ ok: true, github });
 }
