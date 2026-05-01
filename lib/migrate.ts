@@ -112,6 +112,8 @@ export async function ensureTables() {
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
+    await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS category TEXT DEFAULT ''`);
+    await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS tags TEXT DEFAULT ''`);
     await query(`
       CREATE TABLE IF NOT EXISTS page_views (
         id SERIAL PRIMARY KEY,
