@@ -254,7 +254,7 @@ export function Hero({ settings }: { settings?: HeroSettings }) {
           {[
             { k: "5+", v: "Yıl deneyim", c: "from-amber-400/20 to-amber-300/5" },
             { k: "30+", v: "Proje", c: "from-sky-400/20 to-sky-300/5" },
-            { k: "1500+", v: "Hasta bakımı", c: "from-rose-400/20 to-rose-300/5" },
+            { k: "40+", v: "Yazılım teslimi", c: "from-rose-400/20 to-rose-300/5" },
             { k: "98%", v: "Memnuniyet", c: "from-emerald-400/20 to-emerald-300/5" },
           ].map((s, i) => (
             <motion.div

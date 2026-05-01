@@ -80,8 +80,8 @@ export function About() {
               transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               className="absolute -bottom-6 -left-6 rounded-2xl border border-brand-gold/30 bg-white/90 p-4 shadow-glass backdrop-blur dark:bg-brand-ink/80"
             >
-              <p className="font-display text-3xl font-bold text-brand-ink dark:text-brand-cream">1500+</p>
-              <p className="text-xs text-brand-mist">Hasta Deneyimi</p>
+              <p className="font-display text-3xl font-bold text-brand-ink dark:text-brand-cream">40+</p>
+              <p className="text-xs text-brand-mist">Yazılım Projesi</p>
             </motion.div>
           </div>
         </Reveal>

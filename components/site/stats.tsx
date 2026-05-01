@@ -1,15 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { HeartPulse, Code2, GraduationCap, Smile } from "lucide-react";
+import { Rocket, Code2, GraduationCap, Smile } from "lucide-react";
 import { Reveal } from "@/components/shared/reveal";
 import { Counter } from "@/components/shared/counter";
 
 const stats = [
   {
-    icon: HeartPulse,
-    label: "Hasta bakımı",
-    value: 1500,
+    icon: Rocket,
+    label: "Reklam kampanyası",
+    value: 120,
     suffix: "+",
     accent: "from-rose-500 to-pink-400",
     blob: "from-rose-500/20 to-rose-300/5",

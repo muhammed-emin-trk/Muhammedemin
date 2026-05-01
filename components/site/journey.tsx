@@ -25,7 +25,7 @@ const milestones = [
   {
     year: "2022",
     title: "Sahada Hemşirelik",
-    desc: "Endoskopi biriminde aktif hemşire olarak çalışmaya başladım; 1500+ hasta ile birebir bakım deneyimi.",
+    desc: "Endoskopi biriminde aktif hemşire olarak çalışmaya başladım; yoğun tempoda süreç yönetimi ve iletişim pratiği kazandım.",
     icon: HeartPulse,
     color: "from-red-500 to-rose-600",
     glow: "rgba(239,68,68,0.3)",
