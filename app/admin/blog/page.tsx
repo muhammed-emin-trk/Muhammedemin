@@ -46,7 +46,7 @@ export default function BlogAdmin() {
   const [busy, setBusy] = useState(false);
 
   async function load() {
-    const r = await fetch("/api/admin/posts");
+    const r = await fetch("/api/admin/posts", { cache: "no-store" });
     if (r.ok) {
       const data = await r.json();
       setItems(data.map((p: any) => ({

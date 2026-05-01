@@ -56,7 +56,7 @@ export default function PhotosAdmin() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
-    const r = await fetch("/api/admin/photos");
+    const r = await fetch("/api/admin/photos", { cache: "no-store" });
     if (r.ok) setItems(await r.json());
   }
   useEffect(() => { load(); }, []);

@@ -26,7 +26,7 @@ export default function MessagesPage() {
 
   async function load() {
     setLoading(true);
-    const r = await fetch("/api/admin/messages");
+    const r = await fetch("/api/admin/messages", { cache: "no-store" });
     if (r.ok) setItems(await r.json());
     setLoading(false);
   }

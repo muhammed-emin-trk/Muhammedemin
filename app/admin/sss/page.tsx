@@ -11,7 +11,7 @@ export default function FaqsAdmin() {
   const [editing, setEditing] = useState<F | null>(null);
   const [busy, setBusy] = useState(false);
 
-  async function load() { const r = await fetch("/api/admin/faqs"); if (r.ok) setItems(await r.json()); }
+  async function load() { const r = await fetch("/api/admin/faqs", { cache: "no-store" }); if (r.ok) setItems(await r.json()); }
   useEffect(() => { load(); }, []);
 
   async function save() {
