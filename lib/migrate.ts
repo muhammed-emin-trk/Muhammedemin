@@ -20,7 +20,8 @@ export async function ensureTables() {
         tags TEXT DEFAULT '',
         featured BOOLEAN DEFAULT false,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
     await query(`
@@ -36,7 +37,8 @@ export async function ensureTables() {
         tags TEXT DEFAULT '',
         published BOOLEAN DEFAULT true,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
     await query(`
@@ -109,9 +111,14 @@ export async function ensureTables() {
         show_in_nav BOOLEAN DEFAULT false,
         published BOOLEAN DEFAULT true,
         sort_order INT DEFAULT 0,
-        created_at TIMESTAMPTZ DEFAULT NOW()
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        updated_at TIMESTAMPTZ DEFAULT NOW()
       )
     `);
+
+    await query(`ALTER TABLE projects ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
+    await query(`ALTER TABLE posts ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
+    await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()`);
     await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS category TEXT DEFAULT ''`);
     await query(`ALTER TABLE pages ADD COLUMN IF NOT EXISTS tags TEXT DEFAULT ''`);
     await query(`

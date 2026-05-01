@@ -15,7 +15,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   const content = JSON.stringify(b.content || []);
   const tags = Array.isArray(b.tags) ? b.tags.join(",") : String(b.tags || "");
   await query(
-    `UPDATE projects SET slug=$1,title=$2,category=$3,year=$4,role=$5,cover=$6,description=$7,content=$8,tags=$9,featured=$10,sort_order=$11 WHERE id=$12`,
+    `UPDATE projects SET slug=$1,title=$2,category=$3,year=$4,role=$5,cover=$6,description=$7,content=$8,tags=$9,featured=$10,sort_order=$11,updated_at=NOW() WHERE id=$12`,
     [b.slug, b.title, b.category, b.year || null, b.role, b.cover, b.description, content, tags, !!b.featured, b.sort_order || 0, Number(params.id)]
   );
   revalidatePath("/projeler");
