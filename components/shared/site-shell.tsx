@@ -4,6 +4,9 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
 import { CursorGlow } from "./cursor-glow";
+import { IntroScreen } from "./intro-screen";
+import { ScrollToTop } from "./scroll-to-top";
+import { AvailableBadge } from "./available-badge";
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -11,7 +14,7 @@ function ScrollProgress() {
   return (
     <motion.div
       style={{ scaleX }}
-      className="fixed left-0 top-0 z-[80] h-[2px] w-full origin-left bg-gradient-to-r from-brand-bronze via-brand-gold to-brand-copper"
+      className="fixed left-0 top-0 z-[80] h-[3px] w-full origin-left bg-gradient-to-r from-brand-bronze via-brand-gold to-brand-copper"
     />
   );
 }
@@ -35,10 +38,13 @@ type Extra = { href: string; label: string };
 export function SiteShell({ children, extraLinks }: { children: React.ReactNode; extraLinks?: Extra[] }) {
   return (
     <div className="relative">
+      <IntroScreen />
       <CursorGlow />
       <AmbientBlobs />
       <NoiseOverlay />
       <ScrollProgress />
+      <ScrollToTop />
+      <AvailableBadge />
       <div className="relative z-[2]">
         <Navbar extraLinks={extraLinks} />
         {children}
