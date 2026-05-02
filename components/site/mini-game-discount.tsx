@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Timer, RotateCcw, Smartphone, Info } from "lucide-react";
 
-const DISCOUNT_CODE = "OYUN25";
 const TOTAL_TIME = 90;
 const BOARD_SIZE = 14;
 const TARGET_LENGTH = 6;
@@ -36,6 +35,16 @@ function freeCell(forbidden: Set<string>): Cell {
   return c;
 }
 
+function generateCode(score: number): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const rand = Array.from(
+    { length: 4 },
+    () => chars[Math.floor(Math.random() * chars.length)],
+  ).join("");
+  const yr = new Date().getFullYear().toString().slice(-2);
+  return `OYUN-${rand}-${yr}${score}`;
+}
+
 const INIT_SNAKE: Cell[] = [
   { x: 3, y: 7 },
   { x: 2, y: 7 },
@@ -52,6 +61,7 @@ export function MiniGameDiscount() {
   const [target,   setTarget]  = useState(makeTarget);
   const [progress, setProgress] = useState("");
   const [score,    setScore]   = useState(0);
+  const [winCode,  setWinCode] = useState("");
 
   // Food always shows the NEXT needed letter
   const nextChar = target[progress.length] ?? "";
@@ -77,6 +87,7 @@ export function MiniGameDiscount() {
     setSnake(INIT_SNAKE);
     const t = makeTarget();
     setTarget(t); setProgress(""); setScore(0);
+    setWinCode("");
     setFoodPos(freeCell(new Set(INIT_SNAKE.map(keyOf))));
   }
 
@@ -149,7 +160,10 @@ export function MiniGameDiscount() {
 
           if (newProgress.length >= TARGET_LENGTH) {
             setWon(true); setStarted(false);
-            window.localStorage.setItem("discount_code", DISCOUNT_CODE);
+            const code = generateCode(score + 15);
+            setWinCode(code);
+            window.localStorage.setItem("discount_code", code);
+            window.localStorage.setItem("discount_code_at", Date.now().toString());
             return next;
           }
           // place food away from new snake
@@ -243,12 +257,13 @@ export function MiniGameDiscount() {
       )}
 
       {/* ── Game Board ── */}
-      {started && (
-        <div
-          className="mt-5 select-none touch-none"
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
+      <div className="min-h-[600px]">
+        {started && (
+          <div
+            className="mt-5 select-none touch-none"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
           {/* Board */}
           <div
             className="mx-auto overflow-hidden rounded-2xl border-2 border-brand-gold/30 bg-brand-ink/8 dark:bg-black/40"
@@ -256,7 +271,8 @@ export function MiniGameDiscount() {
               display: "grid",
               gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)`,
               gap: "1px",
-              maxWidth: 500,
+              width: 476,
+              height: 476,
               padding: "6px",
               background: "rgba(0,0,0,0.06)",
             }}
@@ -285,11 +301,11 @@ export function MiniGameDiscount() {
                       ? {
                           background: "linear-gradient(135deg, #10b981, #059669)",
                           boxShadow: "0 0 12px rgba(16,185,129,0.7), 0 0 24px rgba(16,185,129,0.3)",
-                          fontSize: "clamp(11px, 2.5vw, 18px)",
+                          fontSize: 16,
                           color: "#fff",
                         }
                       : isHead
-                      ? { fontSize: "clamp(10px, 2vw, 14px)" }
+                      ? { fontSize: 12 }
                       : {}
                   }
                 >
@@ -324,8 +340,8 @@ export function MiniGameDiscount() {
               })}
             </div>
           </div>
-        </div>
-      )}
+          </div>
+        )}
 
       {/* ── Idle state ── */}
       {!started && !won && !lost && (
@@ -345,10 +361,11 @@ export function MiniGameDiscount() {
           </motion.button>
         </div>
       )}
+      </div>
 
       {/* ── Won ── */}
       <AnimatePresence>
-        {won && (
+        {won && winCode !== "" && (
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -361,7 +378,7 @@ export function MiniGameDiscount() {
               {score} puan topladın! İşte indirim kodun:
             </p>
             <div className="mt-3 inline-flex items-center gap-3 rounded-xl bg-emerald-500 px-5 py-3 font-mono text-2xl font-black tracking-widest text-white shadow-lg">
-              {DISCOUNT_CODE}
+              {winCode}
             </div>
             <p className="mt-3 text-xs text-emerald-600 dark:text-emerald-400">
               İletişim formuna bu kodu yazarak %25 indirimden yararlan.
