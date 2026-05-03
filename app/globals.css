@@ -181,6 +181,16 @@ body {
   box-shadow: 0 24px 60px -12px rgba(0,0,0,0.6);
 }
 
+@keyframes blobPulse1 {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes blobPulse2 {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

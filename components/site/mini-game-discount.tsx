@@ -181,7 +181,7 @@ export function MiniGameDiscount() {
 
   /* ── render ──────────────────────────────── */
   return (
-    <div className="overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/80 p-6 backdrop-blur dark:bg-white/[0.05] md:p-8">
+    <div className="overflow-hidden rounded-3xl border border-brand-gold/30 bg-white/80 p-6 backdrop-blur dark:bg-white/[0.05] md:p-8 min-h-[700px]">
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -194,8 +194,7 @@ export function MiniGameDiscount() {
             Tüm harfleri tamamla ve <span className="font-semibold text-brand-bronze">%25 indirim</span> kodunu kazan.
           </p>
         </div>
-        {started && (
-          <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 transition-opacity duration-300 ${started ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
             <div className="flex items-center gap-1.5 rounded-xl bg-brand-ink/5 px-3 py-1.5 dark:bg-white/10">
               <Timer size={14} className={timeLeft <= 15 ? "animate-pulse text-rose-500" : "text-brand-bronze"} />
               <span className={`text-sm font-bold tabular-nums ${timeLeft <= 15 ? "text-rose-500" : "text-brand-ink dark:text-brand-cream"}`}>
@@ -206,12 +205,10 @@ export function MiniGameDiscount() {
               ★ {score}
             </div>
           </div>
-        )}
-      </div>
+        </div>
 
       {/* ── Target progress strip ── */}
-      {started && (
-        <div className="mt-5 rounded-2xl border border-brand-gold/20 bg-brand-ink/5 px-5 py-4 dark:bg-white/5">
+      <div className={`mt-5 rounded-2xl border border-brand-gold/20 bg-brand-ink/5 px-5 py-4 dark:bg-white/5 transition-opacity duration-300 ${started ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <div className="mb-3 flex items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-mist dark:text-brand-cream/50">
               Hedef sıra
@@ -254,16 +251,14 @@ export function MiniGameDiscount() {
             />
           </div>
         </div>
-      )}
 
       {/* ── Game Board ── */}
-      <div className="min-h-[600px]">
-        {started && (
-          <div
-            className="mt-5 select-none touch-none"
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-          >
+      <div className="relative mt-5" style={{ minHeight: 620 }}>
+        <div
+          className={`select-none touch-none transition-opacity duration-300 ${started ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
           {/* Board */}
           <div
             className="mx-auto overflow-hidden rounded-2xl border-2 border-brand-gold/30 bg-brand-ink/8 dark:bg-black/40"
@@ -340,12 +335,14 @@ export function MiniGameDiscount() {
               })}
             </div>
           </div>
-          </div>
-        )}
+        </div>
 
       {/* ── Idle state ── */}
-      {!started && !won && !lost && (
-        <div className="mt-6 flex flex-col items-start gap-4">
+      <div
+        className={`absolute inset-0 flex flex-col items-start gap-4 transition-opacity duration-300 ${
+          !started && !won && !lost ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
           <div className="flex flex-wrap gap-2 text-xs text-brand-mist dark:text-brand-cream/50">
             <span className="flex items-center gap-1.5 rounded-full border border-brand-gold/30 px-3 py-1.5">⌨️ Ok tuşları / WASD</span>
             <span className="flex items-center gap-1.5 rounded-full border border-brand-gold/30 px-3 py-1.5">👆 Ekrana kaydır</span>
@@ -360,7 +357,6 @@ export function MiniGameDiscount() {
             🎮 Oyunu Başlat
           </motion.button>
         </div>
-      )}
       </div>
 
       {/* ── Won ── */}

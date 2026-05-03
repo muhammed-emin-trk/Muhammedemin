@@ -5,18 +5,20 @@ import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "
 
 const ROLES = ["Hemşire", "Yazılım Geliştirici", "Fotoğrafçı", "Gönüllü"];
 
-function FloatingStar({ delay, x, y, size }: { delay: number; x: string; y: string; size: number }) {
+function FloatingStar({ delay, repeatDelay, x, y, size }: {
+  delay: number; repeatDelay: number; x: string; y: string; size: number
+}) {
   return (
     <motion.div
-      className="absolute rounded-full bg-brand-gold"
-      style={{ left: x, top: y, width: size, height: size }}
+      className="absolute rounded-full bg-brand-gold pointer-events-none"
+      style={{ left: x, top: y, width: size, height: size, willChange: "transform, opacity" }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{
-        opacity: [0, 0.8, 0],
+        opacity: [0, 0.7, 0],
         scale: [0, 1, 0],
-        y: [0, -40, -80],
+        y: [0, -50, -90],
       }}
-      transition={{ delay, duration: 3.5, repeat: Infinity, repeatDelay: Math.random() * 3 }}
+      transition={{ delay, duration: 4, repeat: Infinity, repeatDelay, ease: "easeInOut" }}
     />
   );
 }
@@ -31,11 +33,12 @@ function CounterNum({ to, delay }: { to: number; delay: number }) {
   return <motion.span>{rounded}</motion.span>;
 }
 
-const stars = Array.from({ length: 18 }, (_, i) => ({
-  delay: i * 0.22,
-  x: `${Math.random() * 100}%`,
-  y: `${Math.random() * 100}%`,
-  size: Math.random() * 3 + 1.5,
+const stars = Array.from({ length: 8 }, (_, i) => ({
+  delay: i * 0.4,
+  repeatDelay: 1 + (i % 4) * 0.7,
+  x: `${(i * 13 + 5) % 95}%`,
+  y: `${(i * 17 + 10) % 90}%`,
+  size: 1.5 + (i % 3),
 }));
 
 export function IntroScreen() {
@@ -60,7 +63,7 @@ export function IntroScreen() {
   // Role switcher
   useEffect(() => {
     if (!show) return;
-    const id = setInterval(() => setRoleIdx(i => (i + 1) % ROLES.length), 1200);
+    const id = setInterval(() => setRoleIdx(i => (i + 1) % ROLES.length), 1800);
     return () => clearInterval(id);
   }, [show]);
 
@@ -79,23 +82,21 @@ export function IntroScreen() {
           {stars.map((s, i) => <FloatingStar key={i} {...s} />)}
 
           {/* ── Large ambient blobs ─────────────── */}
-          <motion.div
-            className="pointer-events-none absolute -left-48 -top-48 h-[600px] w-[600px] rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(184,150,98,0.18), transparent 70%)" }}
-            animate={{ scale: [1, 1.25, 1], rotate: [0, 30, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          <div
+            className="pointer-events-none absolute -left-48 -top-48 h-[500px] w-[500px] rounded-full blur-2xl"
+            style={{
+              background: "radial-gradient(circle, rgba(184,150,98,0.15), transparent 70%)",
+              animation: "blobPulse1 10s ease-in-out infinite",
+              willChange: "transform",
+            }}
           />
-          <motion.div
-            className="pointer-events-none absolute -bottom-48 -right-48 h-[500px] w-[500px] rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(160,112,64,0.15), transparent 70%)" }}
-            animate={{ scale: [1, 1.3, 1], rotate: [0, -20, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(184,150,98,0.08), transparent 70%)" }}
-            animate={{ scale: [1, 2, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          <div
+            className="pointer-events-none absolute -bottom-48 -right-48 h-[400px] w-[400px] rounded-full blur-2xl"
+            style={{
+              background: "radial-gradient(circle, rgba(160,112,64,0.12), transparent 70%)",
+              animation: "blobPulse2 13s ease-in-out infinite",
+              willChange: "transform",
+            }}
           />
 
           {/* ── Decorative ring ─────────────────── */}
@@ -139,13 +140,6 @@ export function IntroScreen() {
                 style={{ border: "2px solid rgba(184,150,98,0.7)" }}
                 animate={{ scale: [1, 1.5], opacity: [0.7, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut", delay: 0.6 }}
-              />
-              {/* Outer glow ring 2 */}
-              <motion.div
-                className="absolute inset-0 rounded-[36px]"
-                style={{ border: "1px solid rgba(184,150,98,0.4)" }}
-                animate={{ scale: [1, 1.9], opacity: [0.5, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut", delay: 1.2 }}
               />
             </motion.div>
 
@@ -201,7 +195,7 @@ export function IntroScreen() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.4, duration: 0.7 }}
-              className="flex items-center gap-6 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 backdrop-blur"
+              className="flex items-center gap-6 rounded-2xl border border-white/10 bg-white/5 px-8 py-4"
             >
               {[
                 { value: 1500, suffix: "+", label: "Hasta" },
